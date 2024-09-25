@@ -36,11 +36,11 @@ std::vector<float> biquad::applyFilter(const std::vector<float>& input, const st
     std::vector<float> output(N, 0);
 
     for (size_t n = 0; n < N; ++n) {
-        // Convolución del numerador
+        // Convolución del numerador y denominador
         for (size_t i = 0; i < M; ++i) {
             if (n >= i) {
                 output[n] += b[i] * input[n - i];
-                output[n] -= a[j] * output[n - j];
+                output[n] -= a[i] * output[n - i];
             }
         }
     }
@@ -66,5 +66,5 @@ void biquad::process(int nframes, const float *const in, std::vector<float> out)
     }
 
     // Copiar la señal procesada a la salida
-    memcpy(out, temp.data(), sizeof(float) * nframes);
+    memcpy(out.data(), temp.data(), sizeof(float) * nframes);
 }
