@@ -37,11 +37,12 @@ void biquad::getMaxOrder() {
 // Aplicar el filtro a una señal de entrada utilizando los coeficientes de numerador y denominador
 std::vector<float> biquad::applyFilter(const std::vector<float>& input, const std::vector<float>& b, const std::vector<float>& a) {
     size_t N = input.size();
-    size_t M = 3;  // Tamaño de los coeficientes del numerador y denominador
+    size_t M = b.size();  // Tamaño de los coeficientes del numerador
+    size_t L = a.size();  // Tamaño de los coeficientes del denominador (generalmente igual a M)
     std::vector<float> output(N, 0);
 
     for (size_t n = 0; n < N; ++n) {
-        // Convolución del numerador y denominador
+        // Convolución del numerador
         for (size_t i = 0; i < M; ++i) {
             if (n >= i) {
                 output[n] += b[i] * input[n - i];
@@ -54,7 +55,7 @@ std::vector<float> biquad::applyFilter(const std::vector<float>& input, const st
 }
 
 // Procesar la señal de entrada en bloques
-void biquad::process(int nframes, const float *const in, std::vector<float> out) {
+void biquad::process(int nframes, const float *const in, std::vector<float>& out) {
     std::vector<float> temp(nframes);
 
     // Copiar la señal de entrada a un vector temporal

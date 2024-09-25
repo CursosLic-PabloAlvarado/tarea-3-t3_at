@@ -15,7 +15,7 @@ public:
     std::vector<float> denExtractor(int order);
     void getMaxOrder();
     std::vector<float> applyFilter(const std::vector<float>& input, const std::vector<float>& b, const std::vector<float>& a);
-    void process(int nframes, const float *const in,std::vector<float> out);
+    void process(int nframes, const float *const in,std::vector<float>& out);
 
 private:
     std::vector<std::vector<float>> coefs;

@@ -131,10 +131,10 @@ int main(int argc, char *argv[])
       throw std::runtime_error("Could not initialize the JACK client");
     }
 
+    client.configureFilter(filter_coefs);
+
     // keep running until stopped by the user
     std::cout << "Press x key to exit" << std::endl;
-
-    client.configureFilter(filter_coefs);
 
 
     int key = -1;
