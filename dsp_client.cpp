@@ -39,14 +39,15 @@
 
 
 
-passthrough_client::dsp_client() : jack::client()
+dsp_client::dsp_client() : jack::client()
 {
     this->volume = 1.0f;
     this->volumeMultiplier = 1.0f;
     this->filterOn = false;
+    this->k_exp = 0.5f;
 }
 
-passthrough_client::~dsp_client()
+dsp_client::~dsp_client()
 {
 }
 
@@ -75,7 +76,7 @@ void dsp_client::decreaseVolume()
     }
 }
 
-void dsp_client::configureFilter(std::vector<vector<float>> &coefs)
+void dsp_client::configureFilter(std::vector<std::vector<sample_t>> &coefs)
 {
 
     this->filterBiquad = new biquad(coefs);
@@ -112,7 +113,7 @@ bool dsp_client::process(jack_nframes_t nframes,
 {
     if (filterOn)
     {
-        sample_t *const temp;
+        std::vector<float> temp;
 
         this->filterBiquad.process(nframes, in, temp);
 
@@ -122,7 +123,7 @@ bool dsp_client::process(jack_nframes_t nframes,
             out[i] = temp[i] * this->volume;
         }
     }else{
-        memcpy(out, in, sizeof(sample_t) * nframes)
+        memcpy(out, in, sizeof(sample_t) * nframes);
     }
 
     return true;

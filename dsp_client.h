@@ -70,6 +70,7 @@ public:
     bool filterOn;
     float volume;
     float volumeMultiplier;
+    float k_exp;
     biquad filterBiquad;
 
 
