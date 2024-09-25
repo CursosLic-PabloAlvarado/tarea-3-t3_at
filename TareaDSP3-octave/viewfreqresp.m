@@ -32,6 +32,7 @@ function viewfreqresp(filename, Fs = 48000)
     figure;  % Crear nueva figura para la magnitud
     semilogx(w * (Fs / (2 * pi)), mag);  % Convertir w a Hz, usar semilogx para escala logarítmica
     xlim([1 10000]);  % Limitar el rango de frecuencias de 10^0 a 10^4
+    ylim([-100 0])
     title('Respuesta en Frecuencia (Magnitud)');
     xlabel('Frecuencia (Hz)');
     ylabel('Magnitud (dB)');
