@@ -113,7 +113,7 @@ bool dsp_client::process(jack_nframes_t nframes,
 {
     if (filterOn)
     {
-        std::vector<float> temp;
+        std::vector<float> temp(nframes);
 
         this->filterBiquad.process(nframes, in, temp);
 
