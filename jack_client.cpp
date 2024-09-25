@@ -384,4 +384,9 @@ namespace jack {
     return _file_thread.next_block();
   }
   
+
+  bool client::process(jack_nframes_t nframes, const sample_t *const in, sample_t *const out){
+
+
+  }
 }

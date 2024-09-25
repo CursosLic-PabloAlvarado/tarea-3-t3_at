@@ -14,7 +14,8 @@ function viewfreqresp(filename, Fs = 48000)
     hold on;
     % Dibujar el círculo unitario
     t = linspace(0, 2 * pi, 100);
-    plot(cos(t), sin(t), 'r--');  % Círculo unitario
+    plot(cos(t), sin(t), 'r--', 'LineWidth', 2);  % Círculo unitario con línea más gruesa
+    axis equal;  % Mantener proporciones cuadradas
     xlim([-2 2]);  % Ajustar el rango en X
     ylim([-2 2]);  % Ajustar el rango en Y
     title('Diagrama de Polos y Ceros');
@@ -26,13 +27,13 @@ function viewfreqresp(filename, Fs = 48000)
 
     % Respuesta en frecuencia: magnitud y fase
     mag = 20 * log10(abs(H));  % Magnitud en dB
-    phase = mod(angle(H) * (180 / pi), 360);  % Fase en grados, ajustar a [0, 360]
+    phase = -1*mod(angle(H) * (180 / pi), 360);  % Fase en grados, ajustar a [0, 360]
 
     % 2. Gráfico de magnitud (eje logarítmico en frecuencias)
     figure;  % Crear nueva figura para la magnitud
-    semilogx(w * (Fs / (2 * pi)), mag);  % Convertir w a Hz, usar semilogx para escala logarítmica
-    xlim([1 10000]);  % Limitar el rango de frecuencias de 10^0 a 10^4
-    ylim([-100 0])
+    semilogx(w * (Fs / (2 * pi)), mag, 'LineWidth', 2);  % Convertir w a Hz, usar semilogx para escala logarítmica
+    xlim([50 5000]);  % Limitar el rango de frecuencias de 10^0 a 10^4
+    ylim([-100 0]);
     title('Respuesta en Frecuencia (Magnitud)');
     xlabel('Frecuencia (Hz)');
     ylabel('Magnitud (dB)');
@@ -40,9 +41,9 @@ function viewfreqresp(filename, Fs = 48000)
 
     % 3. Gráfico de fase (eje logarítmico en frecuencias)
     figure;  % Crear nueva figura para la fase
-    semilogx(w * (Fs / (2 * pi)), phase);  % Convertir w a Hz, usar semilogx para escala logarítmica
-    xlim([1 10000]);  % Limitar el rango de frecuencias de 10^0 a 10^4
-    ylim([0 360]);  % Limitar el rango de fase a [0, 360] grados
+    semilogx(w * (Fs / (2 * pi)), phase, 'LineWidth', 2);  % Convertir w a Hz, usar semilogx para escala logarítmica
+    xlim([50 5000]);  % Limitar el rango de frecuencias de 10^0 a 10^4
+    ylim([-360 0]);  % Limitar el rango de fase a [0, 360] grados
     title('Respuesta en Frecuencia (Fase)');
     xlabel('Frecuencia (Hz)');
     ylabel('Fase (grados)');
