@@ -40,6 +40,9 @@
 
 #include "jack_client.h"
 #include "biquad.h"
+#include <vector>
+#include <cstring>
+#include <cstring>
 
 /**
  * Jack client class
@@ -60,7 +63,7 @@ public:
     void incrementVolume();
     void decreaseVolume();
     void configureVolume();
-    void configureFilter(std::vector<vector<float>>& coefs);
+    void configureFilter(std::vector<std::vector<sample_t>>& coefs);
     void deactivateModes();
     void activateFilterDefault();
     void activateFilter();

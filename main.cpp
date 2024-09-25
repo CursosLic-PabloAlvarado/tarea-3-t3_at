@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
           if (key > 32)
           {
             std::cout << "Key " << char(key) << " pressed" << std::endl;
-            else if (key == 'o')
+            if (key == 'o')
             {
               client.deactivateModes();
             }
@@ -199,9 +199,7 @@ int main(int argc, char *argv[])
               client.decreaseVolume();
               client.configureVolume();
             }
-          }
-
-          else
+          }else
           {
             std::cout << "Key " << key << " pressed" << std::endl;
           }

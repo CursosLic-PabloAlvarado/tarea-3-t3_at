@@ -37,7 +37,7 @@
 
 #include "dsp_client.h"
 
-#include <cstring>
+
 
 passthrough_client::dsp_client() : jack::client()
 {

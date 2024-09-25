@@ -1,13 +1,13 @@
 #include "biquad.h"
 
 // Constructor para inicializar los coeficientes del filtro
-biquad::biquad(std::vector<std::vector<float>>& coefsIn) {
+biquad::biquad(std::vector<std::vector<sample_t>>& coefsIn) {
     this->coefs = coefsIn;
 }
 
 // Extraer los coeficientes del numerador de una etapa específica
-std::vector<float> biquad::numExtractor(int order) {
-    std::vector<float> a(3);  // Inicializar el vector con tamaño 3
+std::vector<sample_t> biquad::numExtractor(int order) {
+    std::vector<sample_t> a(3);  // Inicializar el vector con tamaño 3
     for (int i = 0; i < 3; i++) {
         a[i] = this->coefs[order][i];
     }
@@ -15,8 +15,8 @@ std::vector<float> biquad::numExtractor(int order) {
 }
 
 // Extraer los coeficientes del denominador de una etapa específica
-std::vector<float> biquad::denExtractor(int order) {
-    std::vector<float> b(3);  // Inicializar el vector con tamaño 3
+std::vector<sample_t> biquad::denExtractor(int order) {
+    std::vector<sample_t> b(3);  // Inicializar el vector con tamaño 3
     for (int i = 3; i < 6; i++) {
         b[i] = this->coefs[order][i];  // Ajuste de índice
     }
@@ -29,11 +29,11 @@ void biquad::getMaxOrder() {
 }
 
 // Aplicar el filtro a una señal de entrada utilizando los coeficientes de numerador y denominador
-std::vector<float> biquad::applyFilter(const std::vector<float>& input, const std::vector<float>& b, const std::vector<float>& a) {
+std::vector<sample_t> biquad::applyFilter(const std::vector<sample_t>& input, const std::vector<sample_t>& b, const std::vector<sample_t>& a) {
     size_t N = input.size();
     size_t M = 3;  // Tamaño de los coeficientes del numerador
     size_t L = 3;  // Tamaño de los coeficientes del denominador
-    std::vector<float> output(N, 0);
+    std::vector<sample_t> output(N, 0);
 
     for (size_t n = 0; n < N; ++n) {
         // Convolución del numerador
