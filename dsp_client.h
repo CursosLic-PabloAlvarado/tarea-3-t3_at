@@ -42,6 +42,7 @@
 #include "biquad.h"
 #include <vector>
 #include <cstring>
+#include <cmath>
 
 /**
  * Jack client class
@@ -71,7 +72,7 @@ public:
     float volume;
     float volumeMultiplier;
     float k_exp;
-    biquad filterBiquad;
+    biquad* filterBiquad;
 
 
     /**
