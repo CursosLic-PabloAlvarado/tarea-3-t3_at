@@ -3,6 +3,12 @@
 // Constructor para inicializar los coeficientes del filtro
 biquad::biquad(std::vector<std::vector<float>>& coefsIn) {
     this->coefs = coefsIn;
+
+    for (int i=0; i<this->coefs.size(); i++){
+        for (int j=0; j<this->coefs[i].size(); j++){
+            std::cout << "Coeficiente cargado: " << this->coefs[i][j] << std::endl;
+        }
+    }
 }
 
 // Extraer los coeficientes del numerador de una etapa específica
