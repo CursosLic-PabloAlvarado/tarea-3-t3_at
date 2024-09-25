@@ -126,7 +126,7 @@ bool dsp_client::process(jack_nframes_t nframes,
         for (jack_nframes_t i = 0; i < nframes; i++)
         {
 
-            out[i] = temp[i] * this->volume;
+            out[i] = in[i] * this->volume;
         }
     }
 
