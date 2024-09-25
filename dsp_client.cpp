@@ -45,7 +45,6 @@ dsp_client::dsp_client() : jack::client()
     this->volumeMultiplier = 5.0f;
     this->filterOn = false;
     this->k_exp = 0.5f;
-    this->temp.resize(1024);
 }
 
 dsp_client::~dsp_client()
@@ -113,16 +112,17 @@ bool dsp_client::process(jack_nframes_t nframes,
                          sample_t *const out)
 {
 
+    std::vector<float> temp(nframes);
 
     if (filterOn)
     {
 
-        this->filterBiquad->process(nframes, in, this->temp);
+        this->filterBiquad->process(nframes, in, temp);
 
         for (jack_nframes_t i = 0; i < nframes; i++)
         {
 
-            out[i] = this->temp[i] * this->volume;
+            out[i] = temp[i] * this->volume;
         }
     }else{
         for (jack_nframes_t i = 0; i < nframes; i++)

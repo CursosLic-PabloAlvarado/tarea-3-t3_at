@@ -73,7 +73,6 @@ public:
     float volumeMultiplier;
     float k_exp;
     biquad* filterBiquad;
-    std::vector<float> temp;
 
 
     /**
