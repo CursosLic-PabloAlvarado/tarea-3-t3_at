@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstring>
+#include "jack_client.h"
 
 class biquad {
 public:

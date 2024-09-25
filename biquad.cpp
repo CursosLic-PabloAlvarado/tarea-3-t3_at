@@ -40,11 +40,6 @@ std::vector<float> biquad::applyFilter(const std::vector<float>& input, const st
         for (size_t i = 0; i < M; ++i) {
             if (n >= i) {
                 output[n] += b[i] * input[n - i];
-            }
-        }
-        // Convolución del denominador (a[0] es 1 y no lo usamos)
-        for (size_t j = 1; j < L; ++j) {
-            if (n >= j) {
                 output[n] -= a[j] * output[n - j];
             }
         }

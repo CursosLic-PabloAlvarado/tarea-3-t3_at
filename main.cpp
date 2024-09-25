@@ -53,17 +53,19 @@
 #include <boost/program_options.hpp>
 
 #include "waitkey.h"
-#include "passthrough_client.h"
+#include "dsp_client.h"
 
 #include "parse_filter.h"
 
-namespace po=boost::program_options;
+namespace po = boost::program_options;
 
 /**
  * Handler for the SIGINT (interrupt signal)
  */
-void signal_handler(int signal) {
-  if (signal == SIGINT) {
+void signal_handler(int signal)
+{
+  if (signal == SIGINT)
+  {
     std::cout << "Ctrl-C caught, cleaning up and exiting" << std::endl;
 
     // Let RAII do the clean-up
@@ -71,103 +73,139 @@ void signal_handler(int signal) {
   }
 }
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-  std::signal(SIGINT,signal_handler);
+  std::signal(SIGINT, signal_handler);
 
-  
-  try {
-    static passthrough_client client;
+  try
+  {
+    static dsp_client client;
 
     typedef jack::client::sample_t sample_t;
-    
+
     // Filter coefficients
     std::string filter_file;
-    std::vector< std::vector< sample_t > > filter_coefs;
-    
+    std::vector<std::vector<sample_t>> filter_coefs;
+
     // Parse options from the command line
     po::options_description desc("Allowed options");
 
-    desc.add_options()
-      ("help,h","show usage information")
-      ("files,f",
-       po::value<std::vector<std::filesystem::path> >()->multitoken(),
-       "List of audio files to be played")
-      ("coeffs,c",
-       po::value<std::string>(&filter_file),
-       "File with filter coefficients (from GNU/Octave)");
+    desc.add_options()("help,h", "show usage information")("files,f",
+                                                           po::value<std::vector<std::filesystem::path>>()->multitoken(),
+                                                           "List of audio files to be played")("coeffs,c",
+                                                                                               po::value<std::string>(&filter_file),
+                                                                                               "File with filter coefficients (from GNU/Octave)");
 
     po::variables_map vm;
-    po::store(po::parse_command_line(argc,argv,desc),vm);
+    po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
-    
-    if (vm.count("help")) {
+
+    if (vm.count("help"))
+    {
       std::cout << desc << std::endl;
       return EXIT_SUCCESS;
     }
 
-    if (vm.count("files")) {
-      const std::vector< std::filesystem::path >&
-        audio_files = vm["files"].as< std::vector<std::filesystem::path> >();
-    
-      for (const auto& f : audio_files) {
-        bool ok =client.add_file(f);
+    if (vm.count("files"))
+    {
+      const std::vector<std::filesystem::path> &
+          audio_files = vm["files"].as<std::vector<std::filesystem::path>>();
+
+      for (const auto &f : audio_files)
+      {
+        bool ok = client.add_file(f);
         std::cout << "Adding file '" << f.c_str() << "' "
                   << (ok ? "succedded" : "failed") << std::endl;
       }
     }
 
-    if (vm.count("coeffs")) {
+    if (vm.count("coeffs"))
+    {
       filter_coefs = parse_filter<sample_t>(filter_file);
       std::cout << filter_coefs.size() << " 2nd order filter read from "
                 << filter_file;
-      for (int i=0; i<2 ; i++){
-        for (int j=0; j<6 ; j++){
-        std::cout << "Coeficiente " << filter_coefs[i][j] << " posicion" << i << std::endl;
-        }
-      }
     }
-    
-    if (client.init() != jack::client_state::Running) {
+
+    if (client.init() != jack::client_state::Running)
+    {
       throw std::runtime_error("Could not initialize the JACK client");
     }
 
     // keep running until stopped by the user
     std::cout << "Press x key to exit" << std::endl;
 
-    int key = -1;
-    bool go_away=false;
-    while (!go_away) {
-      key = waitkey(100);
-      if (key>0) {
-        switch(key) {
-        case 'x': {
-          go_away=true;
-          std::cout << "Finishing..." << std::endl;
-        } break;
-        case 'r': {
+    client.configureFilter(filter_coefs);
 
-          if (vm.count("files")) {
-            const std::vector< std::filesystem::path >&
-              audio_files =
-              vm["files"].as< std::vector<std::filesystem::path> >();
-            
-            for (const auto& f : audio_files) {
-              bool ok =client.add_file(f);
+
+    int key = -1;
+    bool go_away = false;
+    while (!go_away)
+    {
+      key = waitkey(100);
+      if (key > 0)
+      {
+        switch (key)
+        {
+        case 'x':
+        {
+          go_away = true;
+          std::cout << "Finishing..." << std::endl;
+        }
+        break;
+        case 'r':
+        {
+
+          if (vm.count("files"))
+          {
+            const std::vector<std::filesystem::path> &
+                audio_files =
+                    vm["files"].as<std::vector<std::filesystem::path>>();
+
+            for (const auto &f : audio_files)
+            {
+              bool ok = client.add_file(f);
               std::cout << "  Re-adding file '" << f.c_str() << "' "
                         << (ok ? "succedded" : "failed") << std::endl;
             }
           }
-          
+
           std::cout << "Repeat playing files" << std::endl;
-        } break;
-        default: {
-          if (key>32) {
+        }
+        break;
+        default:
+        {
+          if (key > 32)
+          {
             std::cout << "Key " << char(key) << " pressed" << std::endl;
-          } else {
+            else if (key == 'o')
+            {
+              client.deactivateModes();
+            }
+            else if (key == 'p')
+            {
+              client.activateFilterDefault();
+            }
+            else if (key == 'c')
+            {
+              client.activateFilter();
+            }
+            else if (key == '+')
+            {
+              client.incrementVolume();
+              client.configureVolume();
+            }
+            else if (key == '-')
+            {
+              client.decreaseVolume();
+              client.configureVolume();
+            }
+          }
+
+          else
+          {
             std::cout << "Key " << key << " pressed" << std::endl;
           }
-          key=-1;
+          key = -1;
         }
         } // switch key
       } // if (key>0)
@@ -175,11 +213,11 @@ int main (int argc, char *argv[])
 
     client.stop();
   }
-  catch (std::exception& exc) {
+  catch (std::exception &exc)
+  {
     std::cout << argv[0] << ": Error: " << exc.what() << std::endl;
     exit(EXIT_FAILURE);
   }
-  
 
   exit(EXIT_SUCCESS);
 }
