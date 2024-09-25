@@ -69,12 +69,11 @@ void biquad::process(int nframes, const float *const in, std::vector<float>& out
 
     // Obtener el número de etapas del filtro
     this->getMaxOrder();
-    /*  
+
     // Aplicar el filtro por cada etapa
-    for (int i = 0; i < this->maxOrder; i++) {
-        temp = this->applyFilter(temp, this->numExtractor(i), this->denExtractor(i));
-    }
-    */
+    //for (int i = 0; i < this->maxOrder; i++) {
+        temp = this->applyFilter(temp, this->numExtractor(0), this->denExtractor(0));
+    //}
 
     for (int i = 0; i < nframes; i++) {
         out[i] = temp[i];
