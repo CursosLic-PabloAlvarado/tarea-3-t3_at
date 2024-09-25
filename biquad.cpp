@@ -13,20 +13,20 @@ biquad::biquad(std::vector<std::vector<float>>& coefsIn) {
 
 // Extraer los coeficientes del numerador de una etapa específica
 std::vector<float> biquad::numExtractor(int order) {
-    std::vector<float> a(3);  // Inicializar el vector con tamaño 3
+    std::vector<float> b(3);  // Inicializar el vector con tamaño 3
     for (int i = 0; i < 3; i++) {
-        a[i] = this->coefs[order][i];
+        b[i] = this->coefs[order][i];
     }
-    return a;
+    return b;
 }
 
 // Extraer los coeficientes del denominador de una etapa específica
 std::vector<float> biquad::denExtractor(int order) {
-    std::vector<float> b(3);  // Inicializar el vector con tamaño 3
+    std::vector<float> a(3);  // Inicializar el vector con tamaño 3
     for (int i = 3; i < 6; i++) {
-        b[i] = this->coefs[order][i];  // Ajuste de índice
+        a[i] = this->coefs[order][i];  // Ajuste de índice
     }
-    return b;
+    return a;
 }
 
 // Obtener el máximo número de etapas del filtro (el orden del filtro)
@@ -38,7 +38,6 @@ void biquad::getMaxOrder() {
 std::vector<float> biquad::applyFilter(const std::vector<float>& input, const std::vector<float>& b, const std::vector<float>& a) {
     size_t N = input.size();
     size_t M = b.size();  // Tamaño de los coeficientes del numerador
-    size_t L = a.size();  // Tamaño de los coeficientes del denominador (generalmente igual a M)
     std::vector<float> output(N, 0);
 
     for (size_t n = 0; n < N; ++n) {
@@ -46,7 +45,12 @@ std::vector<float> biquad::applyFilter(const std::vector<float>& input, const st
         for (size_t i = 0; i < M; ++i) {
             if (n >= i) {
                 output[n] += b[i] * input[n - i];
-                output[n] -= a[i] * output[n - i];
+            }
+        }
+        // Convolución del denominador, omitiendo a[0]
+        for (size_t j = 1; j < M; ++j) {  // Empieza desde a[1]
+            if (n >= j) {
+                output[n] -= a[j] * output[n - j];
             }
         }
     }
@@ -71,6 +75,9 @@ void biquad::process(int nframes, const float *const in, std::vector<float>& out
         temp = this->applyFilter(temp, this->numExtractor(i), this->denExtractor(i));
     }
 
-    // Copiar la señal procesada a la salida
-    memcpy(out.data(), temp.data(), sizeof(float) * nframes);
+    for (int i = 0; i < nframes; i++) {
+        out[i] = temp[i];
+    }
+
+    
 }

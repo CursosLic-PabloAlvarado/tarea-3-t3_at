@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
     {
       filter_coefs = parse_filter<sample_t>(filter_file);
       std::cout << filter_coefs.size() << " 2nd order filter read from "
-                << filter_file;
+                << filter_file << std::endl;
     }
 
     if (client.init() != jack::client_state::Running)
