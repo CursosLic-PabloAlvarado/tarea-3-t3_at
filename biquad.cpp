@@ -31,8 +31,7 @@ void biquad::getMaxOrder() {
 // Aplicar el filtro a una señal de entrada utilizando los coeficientes de numerador y denominador
 std::vector<float> biquad::applyFilter(const std::vector<float>& input, const std::vector<float>& b, const std::vector<float>& a) {
     size_t N = input.size();
-    size_t M = 3;  // Tamaño de los coeficientes del numerador
-    size_t L = 3;  // Tamaño de los coeficientes del denominador
+    size_t M = 3;  // Tamaño de los coeficientes del numerador y denominador
     std::vector<float> output(N, 0);
 
     for (size_t n = 0; n < N; ++n) {
