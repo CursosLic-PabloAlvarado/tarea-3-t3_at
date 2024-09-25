@@ -49,7 +49,7 @@ std::vector<float> biquad::applyFilter(const std::vector<float>& input, const st
 }
 
 // Procesar la señal de entrada en bloques
-void biquad::process(int nframes, const sample_t *const in, std::vector<float> out) {
+void biquad::process(int nframes, const float *const in, std::vector<float> out) {
     std::vector<float> temp(nframes);
 
     // Copiar la señal de entrada a un vector temporal
