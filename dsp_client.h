@@ -42,7 +42,6 @@
 #include "biquad.h"
 #include <vector>
 #include <cstring>
-#include <cstring>
 
 /**
  * Jack client class

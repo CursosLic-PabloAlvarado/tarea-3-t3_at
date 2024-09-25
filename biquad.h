@@ -7,16 +7,16 @@
 
 class biquad {
 public:
-    biquad(std::vector<std::vector<sample_t>>& coefsIn);
+    biquad(std::vector<std::vector<float>>& coefsIn);
 
     std::vector<float> numExtractor(int order);
     std::vector<float> denExtractor(int order);
     void getMaxOrder();
-    std::vector<float> applyFilter(const std::vector<sample_t>& input, const std::vector<sample_t>& b, const std::vector<sample_t>& a);
+    std::vector<float> applyFilter(const std::vector<float>& input, const std::vector<float>& b, const std::vector<float>& a);
     void process(jack_nframes_t nframes, const float *const in, float *const out);
 
 private:
-    std::vector<std::vector<sample_t>> coefs;
+    std::vector<std::vector<float>> coefs;
     int maxOrder;
 };
 
