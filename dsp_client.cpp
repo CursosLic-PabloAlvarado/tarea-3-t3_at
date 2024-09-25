@@ -42,7 +42,7 @@
 dsp_client::dsp_client() : jack::client()
 {
     this->volume = 1.0f;
-    this->volumeMultiplier = 1.0f;
+    this->volumeMultiplier = 5.0f;
     this->filterOn = false;
     this->k_exp = 0.5f;
 }
@@ -78,7 +78,7 @@ void dsp_client::decreaseVolume()
 
 void dsp_client::configureFilter(std::vector<std::vector<sample_t>> &coefs)
 {
-
+    this->configureVolume();
     this->filterBiquad = new biquad(coefs);
 }
 
@@ -123,7 +123,11 @@ bool dsp_client::process(jack_nframes_t nframes,
             out[i] = temp[i] * this->volume;
         }
     }else{
-        memcpy(out, in, sizeof(sample_t) * nframes);
+        for (jack_nframes_t i = 0; i < nframes; i++)
+        {
+
+            out[i] = temp[i] * this->volume;
+        }
     }
 
     return true;
