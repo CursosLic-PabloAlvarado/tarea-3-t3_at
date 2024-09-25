@@ -13,7 +13,7 @@ public:
     std::vector<float> denExtractor(int order);
     void getMaxOrder();
     std::vector<float> applyFilter(const std::vector<float>& input, const std::vector<float>& b, const std::vector<float>& a);
-    void process(jack_nframes_t nframes, const float *const in, float *const out);
+    void process(int nframes, std::vector<float> in, float *const out);
 
 private:
     std::vector<std::vector<float>> coefs;
