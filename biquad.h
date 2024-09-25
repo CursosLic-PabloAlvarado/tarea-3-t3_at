@@ -4,6 +4,8 @@
 #include <vector>
 #include <cstring>
 #include "jack_client.h"
+#include <cstdlib>
+#include <iostream>
 
 class biquad {
 public:
