@@ -40,7 +40,7 @@ std::vector<float> biquad::applyFilter(const std::vector<float>& input, const st
     size_t M = b.size();  // Tamaño de los coeficientes del numerador
     std::vector<float> output(N, 0);
 
-    for (size_t n = 0; n < N; ++n) {
+    for (size_t n = 0; n < 100; ++n) {
         // Convolución del numerador
         for (size_t i = 0; i < M; ++i) {
             if (n >= i) {
