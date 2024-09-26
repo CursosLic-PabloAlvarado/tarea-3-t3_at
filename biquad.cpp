@@ -64,7 +64,7 @@ std::vector<float> biquad::applyFilter(const std::vector<float> &input, const st
         }
 
         // Convolución del denominador, omitiendo a[0]
-        for (size_t j = 0; j < M; ++j)
+        for (size_t j = 1; j < M; ++j)
         { // Empieza desde a[1]
             if (n >= j)
             {
@@ -82,9 +82,9 @@ void biquad::process(int nframes, const float *const in, std::vector<float> &out
     std::vector<float> temp(nframes);
 
     // Copiar la señal de entrada al vector temp
-    for (jack_nframes_t i = 0; i < nframes; ++i)
+    for (jack_nframes_t i = 0; i < nframes; i++)
     {
-        temp[i] = in[i]; // Copia manual si 'in' es un arreglo o puntero
+        temp[i] = in[i]; 
     }
 
     // Aplicar el filtro por cada etapa
