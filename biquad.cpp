@@ -94,7 +94,7 @@ void biquad::process(int nframes, const float *const in, std::vector<float> &out
     }
 
     // Copiar el resultado filtrado al puntero de salida 'out'
-    for (jack_nframes_t i = 0; i < nframes; ++i)
+    for (int i = 0; i < nframes; ++i)
     {
         out[i] = temp[i]; // Copia manual a 'out' que es un puntero
     }
