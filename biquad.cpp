@@ -18,7 +18,7 @@ biquad::biquad(std::vector<std::vector<float>> &coefsIn)
 
 
     std::vector<float> b_first =  this->numExtractor(0);
-    std::vector<float> a_first =  this->denExtractor(1);
+    std::vector<float> a_first =  this->denExtractor(0);
 
     std::cout << "Primer numerador: " << b_first[0] << ", " << b_first[1] << ", " << b_first[2] << std::endl;
     std::cout << "Primer denominador: " << a_first[0] << ", " << a_first[1] << ", " << a_first[2] << std::endl;
