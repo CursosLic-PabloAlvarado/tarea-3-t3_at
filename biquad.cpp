@@ -9,7 +9,7 @@ biquad::biquad(std::vector<std::vector<float>> &coefsIn)
     {
         for (int j = 0; j < this->coefs[i].size(); j++)
         {
-            std::cout << "Coeficiente cargado: " << this->coefs[i][j] << std::endl;
+            std::cout << "Coeficiente cargado: " << this->coefs[i][j] << "fila "<< i << std::endl;
         }
     }
     // Obtener el número de etapas del filtro
