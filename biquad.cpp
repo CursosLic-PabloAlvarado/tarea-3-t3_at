@@ -21,13 +21,9 @@ biquad::biquad(std::vector<std::vector<float>> &coefsIn)
 std::vector<float> biquad::numExtractor(int order)
 {
     std::vector<float> b(3); // Inicializar el vector con tamaño 3
-    if (order < this->coefs.size() && this->coefs[order].size() >= 3) {
-        for (int i = 0; i < 3; i++) {
-            b[i] = this->coefs[order][i];
-        }
-    } else {
-        // Manejo de error si los coeficientes no tienen el tamaño esperado
-        std::cerr << "Error: tamaño incorrecto de coeficientes en la etapa " << order << std::endl;
+    for (int i = 0; i < 3; i++)
+    {
+        b[i] = this->coefs[order][i];
     }
     return b;
 }
@@ -36,14 +32,11 @@ std::vector<float> biquad::numExtractor(int order)
 std::vector<float> biquad::denExtractor(int order)
 {
     std::vector<float> a(3); // Inicializar el vector con tamaño 3
-    if (order < this->coefs.size() && this->coefs[order].size() >= 6) {
-        for (int i = 0; i < 3; i++) {
-            a[i] = this->coefs[order][i + 3]; // Ajuste de índice
-        }
-    } else {
-        // Manejo de error si los coeficientes no tienen el tamaño esperado
-        std::cerr << "Error: tamaño incorrecto de coeficientes en la etapa " << order << std::endl;
+    for (int i = 0; i < 3; i++)
+    {
+        a[i] = this->coefs[order][i + 3]; // Ajuste de índice
     }
+
     return a;
 }
 
