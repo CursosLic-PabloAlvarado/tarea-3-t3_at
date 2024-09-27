@@ -39,7 +39,7 @@
 #define _DSP_CLIENT_H
 
 #include "jack_client.h"
-#include "biquad.h"
+#include "cascade.h"
 #include <vector>
 #include <cstring>
 #include <cmath>
@@ -72,7 +72,7 @@ public:
     float volume;
     float volumeMultiplier;
     float k_exp;
-    biquad* filterBiquad;
+    cascade* filterAllStages;
 
 
     /**

@@ -79,7 +79,7 @@ void dsp_client::decreaseVolume()
 void dsp_client::configureFilter(std::vector<std::vector<sample_t>> &coefs)
 {
     this->configureVolume();
-    this->filterBiquad = new biquad(coefs);
+    this->filterAllStages = new cascade(coefs);
 }
 
 void dsp_client::activateFilter()
@@ -117,7 +117,7 @@ bool dsp_client::process(jack_nframes_t nframes,
     if (filterOn)
     {
 
-        this->filterBiquad->process(nframes, in, temp);
+        this->filterAllStages->process(nframes, in, temp);
 
         for (jack_nframes_t i = 0; i < nframes; i++)
         {
