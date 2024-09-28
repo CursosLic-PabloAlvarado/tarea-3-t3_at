@@ -14,7 +14,7 @@ public:
     void process(int nframes, const float *const in, float *const out);
 
 private:
-    std::vector<biquad*> stages; 
+    std::vector<biquad*> stages(3); 
     std::vector<std::vector<float>> coefs;
     int maxOrder;
 };
