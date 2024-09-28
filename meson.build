@@ -6,6 +6,7 @@ project('tarea3','cpp',
 jack_dep = dependency('jack')
 sndfile_dep = dependency('sndfile')
 boost_dep = dependency('boost', modules : ['program_options','system'])
+#google_benchmkark_dep = dependency('benchmark', required : true) 
 
 all_deps = [jack_dep,sndfile_dep,boost_dep]
 sources = files('main.cpp', 'jack_client.cpp','passthrough_client.cpp',
@@ -14,7 +15,7 @@ sources = files('main.cpp', 'jack_client.cpp','passthrough_client.cpp',
 executable('tarea3',sources,dependencies:all_deps)
 
 
-#google_benchmkark_dep = dependency('benchmark', required : true)                
+               
 #benchmark_tarea3=executable('benchmark_tarea3',                                 
 #                files('benchmark.cpp','biquad.cpp'),                
 #                dependencies:[boost_dep,google_benchmkark_dep],     
