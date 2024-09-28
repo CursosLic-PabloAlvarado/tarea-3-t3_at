@@ -4,7 +4,7 @@ cascade::cascade(std::vector<std::vector<float>>& coefsIn){
 
     this->coefs = coefsIn;
     for (int i=0; i <this->coefs.size(); i++){
-        this->stages = new biquad(coefsIn[i]);
+        this->stages[i] = new biquad(coefsIn[i]);
     }
 
     this->maxOrder = coefsIn.size();
