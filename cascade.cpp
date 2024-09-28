@@ -18,7 +18,7 @@ void cascade::process(int nframes, const float *const in, float * const out){
 
     memcpy(temp, in, sizeof(float)*nframes);
     //Procesar en cascada-serie
-    for (i=0; i<this->maxOrder; i++){
+    for (int i=0; i<this->maxOrder; i++){
         this->stages[i]->process(nframes, temp, tempOut);
         memcpy(temp, tempOut, sizeof(float)*nframes);
     }

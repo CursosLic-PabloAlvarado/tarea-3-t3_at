@@ -10,8 +10,8 @@ biquad::biquad(std::vector<float> &coefsIn)
         std::cout << "Coeficiente cargado: " << this->coefs[i] << "fila " << i << std::endl;
     }
 
-    this->a = this->denExtractor();
-    this->b = this->numExtractor();
+    this->denExtractor();
+    this->numExtractor();
 
     this->x0 = 0.0;
     this->x1 = 0.0;
@@ -48,12 +48,11 @@ void biquad::getMaxOrder()
     this->maxOrder = this->coefs.size(); // Número de etapas es el tamaño del vector de coeficientes
 }
 
-void biquad::applyFilter(float* input, float *output)
+void biquad::applyFilter(const float *const in, float *const output, int nFrames)
 {
 
-    size_t N = input.size();
 
-    for (size_t n = 0; n < N; ++n)
+    for (size_t n = 0; n < nFrames; ++n)
     {
 
         // Forma directa
@@ -76,7 +75,7 @@ void biquad::applyFilter(float* input, float *output)
 void biquad::process(int nframes, const float *const in, float *const out)
 {
 
-    this->applyFilter(in, out);
+    this->applyFilter(in, out, nframes);
 }
 
 void biquad::processOne(float input, float output)

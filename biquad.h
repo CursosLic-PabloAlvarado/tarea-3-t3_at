@@ -14,7 +14,7 @@ public:
     void numExtractor();
     void denExtractor();
     void getMaxOrder();
-    void applyFilter(float* input, float* output);
+    void applyFilter(const float *const in, float *const out, int nFrames);
     void process(int nframes, const float *const in, float *const out);
     void processOne(float input, float output);
 
