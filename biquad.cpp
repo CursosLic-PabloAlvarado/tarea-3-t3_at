@@ -48,7 +48,7 @@ void biquad::getMaxOrder()
     this->maxOrder = this->coefs.size(); // Número de etapas es el tamaño del vector de coeficientes
 }
 
-void biquad::applyFilter(float &input, float &output)
+void biquad::applyFilter(float* input, float *output)
 {
 
     size_t N = input.size();
