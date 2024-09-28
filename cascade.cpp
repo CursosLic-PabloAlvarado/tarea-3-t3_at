@@ -1,15 +1,16 @@
 #include "cascade.h"
 
 cascade::cascade(std::vector<std::vector<float>>& coefsIn){
-
+    this->maxOrder = coefsIn.size();
+    this->stages.resize(this->maxOrder)
     this->coefs = coefsIn;
-    for (int i=0; i <this->coefs.size(); i++){
+    for (int i=0; i <this->maxOrder; i++){
         std::cout << "Etapa " << i <<std::endl;
         this->stages[i] = new biquad(coefsIn[i]);
         
     }
 
-    this->maxOrder = coefsIn.size();
+    
 }
 
 
