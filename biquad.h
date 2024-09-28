@@ -19,7 +19,7 @@ public:
     void processOne(float input, float output);
 
 private:
-    std::vector<std::vector<float>> coefs;
+    std::vector<float> coefs;
     int maxOrder;
     std::vector<float> b;
     std::vector<float> a;

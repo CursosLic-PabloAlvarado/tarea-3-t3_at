@@ -11,7 +11,7 @@ cascade::cascade(std::vector<std::vector<float>>& coefsIn){
 }
 
 
-void cascade::process(int nframes, const float *const in, float *const out){
+void cascade::process(int nframes, const float *const in, float * const out){
 
     float* temp = new float[nframes];
     float* tempOut = new float[nframes];

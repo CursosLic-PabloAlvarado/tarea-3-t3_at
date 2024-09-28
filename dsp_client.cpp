@@ -112,7 +112,7 @@ bool dsp_client::process(jack_nframes_t nframes,
                          sample_t *const out)
 {
 
-    std::vector<float> temp(nframes);
+    float * temp = new float[nframes];
 
     if (filterOn)
     {
