@@ -12,3 +12,15 @@ sources = files('main.cpp', 'jack_client.cpp','passthrough_client.cpp',
                 'sndfile_thread.cpp','waitkey.cpp', 'dsp_client.cpp', 'biquad.cpp', 'cascade.cpp')
 
 executable('tarea3',sources,dependencies:all_deps)
+
+
+#google_benchmkark_dep = dependency('benchmark', required : true)                
+#benchmark_tarea3=executable('benchmark_tarea3',                                 
+#                files('benchmark.cpp','biquad.cpp'),                
+#                dependencies:[boost_dep,google_benchmkark_dep],     
+#                cpp_args : ['-std=c++20'],                          
+#                build_by_default : false                            
+#        )                                                    
+                                                                                    
+# Register benchmark target                                                     
+#benchmark('benchmark_suite',benchmark_tarea3)      
