@@ -16,12 +16,12 @@ executable('tarea3',sources,dependencies:all_deps)
 
 
                
-#benchmark_tarea3=executable('benchmark_tarea3',                                 
-#                files('benchmark.cpp','biquad.cpp'),                
-#                dependencies:[boost_dep,google_benchmkark_dep],     
-#                cpp_args : ['-std=c++20'],                          
-#                build_by_default : false                            
-#        )                                                    
+benchmark_tarea3=executable('benchmark_tarea3',                                 
+                files('benchmark.cpp','biquad.cpp', 'cascade.cpp'),                
+                dependencies:[boost_dep,google_benchmkark_dep],     
+                cpp_args : ['-std=c++20'],                          
+                build_by_default : false                            
+        )                                                    
                                                                                     
 # Register benchmark target                                                     
-#benchmark('benchmark_suite',benchmark_tarea3)      
+benchmark('benchmark_suite',benchmark_tarea3)      
