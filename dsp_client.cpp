@@ -137,7 +137,7 @@ bool dsp_client::process(jack_nframes_t nframes,
             out[i] = temp[i] * this->volume;
         }
     }else if(filterDefault){
-        this->filterAllStages->process(nframes, in, temp);
+        this->filterDefault->process(nframes, in, temp);
 
         for (jack_nframes_t i = 0; i < nframes; i++)
         {
