@@ -19,12 +19,6 @@ public:
     void process(int nframes, const float *const in, float *const out);
     float processOne(float input);
 
-private:
-    std::vector<float> coefs;
-    int maxOrder;
-    std::vector<float> b;
-    std::vector<float> a;
-
     float a0, a1, a2;
     float b0, b1, b2;
 
@@ -35,6 +29,12 @@ private:
     float y2;
     float w2_past;
     float w1_past;
+
+private:
+    std::vector<float> coefs;
+    int maxOrder;
+    std::vector<float> b;
+    std::vector<float> a;
 };
 
 #endif // BIQUAD_H

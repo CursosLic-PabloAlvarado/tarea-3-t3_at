@@ -7,11 +7,14 @@
 #include <cstdlib>
 #include <iostream>
 #include "biquad.h"
+#include <immintrin.h>
+
 
 class cascade {
 public:
     cascade(std::vector<std::vector<float>>& coefsIn);
-    void process(int nframes, const float *const in, float *const out);
+    inline void process(int nframes, const float * __restrict in, float * __restrict out);
+    
 
 private:
     std::vector<biquad*> stages; 

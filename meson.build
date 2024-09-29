@@ -12,14 +12,19 @@ all_deps = [jack_dep,sndfile_dep,boost_dep]
 sources = files('main.cpp', 'jack_client.cpp','passthrough_client.cpp',
                 'sndfile_thread.cpp','waitkey.cpp', 'dsp_client.cpp', 'biquad.cpp', 'cascade.cpp')
 
-executable('tarea3',sources,dependencies:all_deps)
+# Añadir las banderas de optimización y símbolos de depuración
+opt_flags = ['-O3', '-g']
+
+executable('tarea3', sources,
+           dependencies: all_deps,
+           cpp_args: opt_flags)
 
 
                
 benchmark_tarea3=executable('benchmark_tarea3',                                 
                 files('benchmark.cpp','biquad.cpp', 'cascade.cpp'),                
                 dependencies:[boost_dep,google_benchmkark_dep],     
-                cpp_args : ['-std=c++20'],                          
+                cpp_args : ['-std=c++20'] + opt_flags,                          
                 build_by_default : false                            
         )                                                    
                                                                                     
