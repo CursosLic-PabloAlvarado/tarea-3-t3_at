@@ -20,7 +20,6 @@ public:
     void applyFilter(const float *const input, float *const output, int nFrames);
     void process(int nframes, const float *const in, float *const out);
     float processOne(float input);
-    //void processEight(float * __restrict in, float * __restrict out);
 
     float a0, a1, a2;
     float b0, b1, b2;

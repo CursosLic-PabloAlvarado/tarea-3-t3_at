@@ -1,7 +1,7 @@
 
 
 Fs = 48000;   % Frecuencia de muestreo (samples/segundo)
-T = 5;        % Duración en segundos
+T = 10;        % Duración en segundos
 Fmin = 50;    % Frecuencia mínima del barrido en Hz
 Fmax = 5000;  % Frecuencia máxima del barrido en Hz
 t = linspace(0, T, T * Fs);  % Vector de tiempo
