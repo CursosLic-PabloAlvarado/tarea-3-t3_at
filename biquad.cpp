@@ -10,8 +10,8 @@ biquad::biquad(std::vector<float> &coefsIn)
         std::cout << "Coeficiente cargado: " << this->coefs[i] << "fila " << i << std::endl;
     }
 
-    this->a.resize(3);
-    this->b.resize(3);
+    //this->a.resize(3);
+    //this->b.resize(3);
 
     this->denExtractor();
     this->numExtractor();
@@ -28,21 +28,30 @@ biquad::biquad(std::vector<float> &coefsIn)
 // Extraer los coeficientes del numerador de una etapa específica
 void biquad::numExtractor()
 {
-
+    /*  
     for (int i = 0; i < 3; i++)
     {
         this->b[i] = this->coefs[i];
     }
+    */
+    b0 = this->coefs[0];
+    b1 = this->coefs[1];
+    b2 = this->coefs[2];
 }
 
 // Extraer los coeficientes del denominador de una etapa específica
 void biquad::denExtractor()
 {
-
+    /*  
     for (int i = 0; i < 3; i++)
     {
         this->a[i] = this->coefs[i + 3]; // Ajuste de índice
     }
+    */
+    a0 = this->coefs[3];
+    a1 = this->coefs[4];
+    a2 = this->coefs[5];
+    
 }
 
 // Obtener el máximo número de etapas del filtro (el orden del filtro)
@@ -71,9 +80,9 @@ void biquad::applyFilter(const float *const input, float *const output, int nFra
 
 
 
-        output[n] = this->b[0]*input[n] + this->w1_past;
-        this->w1_past = this->b[1]*input[n] - this->a[1]*output[n] + this->w2_past;
-        this->w2_past = this->b[2]*input[n] - this->a[2]*output[n];
+        output[n] = this->b0*input[n] + this->w1_past;
+        this->w1_past = this->b1*input[n] - this->a1*output[n] + this->w2_past;
+        this->w2_past = this->b2*input[n] - this->a2*output[n];
 
 
     }
@@ -100,9 +109,9 @@ float biquad::processOne(float input)
     */
     // Forma transpuesta
 
-    float output = this->b[0]*input + this->w1_past;
-    this->w1_past = this->b[1]*input - this->a[1]*output + this->w2_past;
-    this->w2_past = this->b[2]*input - this->a[2]*output;
+    float output = this->b0*input + this->w1_past;
+    this->w1_past = this->b1*input - this->a1*output + this->w2_past;
+    this->w2_past = this->b2*input - this->a2*output;
 
     return output;
     

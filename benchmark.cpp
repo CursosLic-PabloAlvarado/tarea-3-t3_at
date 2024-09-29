@@ -49,10 +49,12 @@
 */
 
 static void BM_Biquad_Process(benchmark::State& state) {
-  biquad dut(std::vector<float>{
-      1, -1.9962282681026606, 1.0000000006886136,
-      1,-1.9902746344470237,0.99111829673050256
-    });
+
+  std::vector<float> coefs = {
+    1, -1.9962282681026606, 1.0000000006886136,
+    1,-1.9902746344470237,0.99111829673050256
+  };
+  biquad dut(coefs);
 
   int size = state.range(0);
 
@@ -71,14 +73,15 @@ static void BM_Biquad_Process(benchmark::State& state) {
 BENCHMARK(BM_Biquad_Process)->RangeMultiplier(2)->Range(256, 8<<10);
 
 static void BM_Cascade_Process(benchmark::State& state) {
-  cascade dut(std::vector< std::vector<float> >{
+  std::vector< std::vector<float> > coefs = {
       {0.88489099304085195,-1.7647259369167299,0.88489099279944872,
       1,-1.9447696737414277,0.96118976527688038},
       {1, -1.9962282681026606, 1.0000000006886136,
       1,-1.9902746344470237,0.99111829673050256},
       {1,-1.9975106328926273,0.99999999958419417,
       1,-1.8137023593689499,0.81712922359906082}
-    });
+    };
+  cascade dut(coefs);
   int size = state.range(0);
 
   float input[size];
