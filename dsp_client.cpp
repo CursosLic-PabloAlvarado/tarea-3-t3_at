@@ -44,6 +44,7 @@ dsp_client::dsp_client() : jack::client()
     this->volume = 1.0f;
     this->volumeMultiplier = 5.0f;
     this->filterOn = false;
+    this->filterDefOn = false;
     this->k_exp = 0.5f;
 }
 
@@ -79,7 +80,17 @@ void dsp_client::decreaseVolume()
 void dsp_client::configureFilter(std::vector<std::vector<sample_t>> &coefs)
 {
     this->configureVolume();
-    this->filterAllStages = new cascade(coefs);
+
+    if (coefs.size() != 0){
+        this->filterAllStages = new cascade(coefs);
+    }
+    
+    std::vector<std::vector<float>> defaultCoefs = {
+    {2.2564574477494834e-05f, 4.5129031149237047e-05f, 2.2564456672357237e-05f, 1.0f, -1.9408228439711848f, 0.94404642946207562f},
+    {1.0f, 1.000005220827576f, 0.0f, 1.0f, -0.94400130031277318f, 0.0f}
+    };
+
+    this->filterDefault = new cascade(defaultCoefs);
 }
 
 void dsp_client::activateFilter()
@@ -91,12 +102,13 @@ void dsp_client::activateFilter()
 void dsp_client::activateFilterDefault()
 {
 
-    filterOn = true;
+    filterDefOn = true;
 }
 
 void dsp_client::deactivateModes()
 {
     filterOn = false;
+    filterDefOn = false;
 }
 
 /**
@@ -124,7 +136,16 @@ bool dsp_client::process(jack_nframes_t nframes,
 
             out[i] = temp[i] * this->volume;
         }
-    }else{
+    }else if(filterDefault){
+        this->filterAllStages->process(nframes, in, temp);
+
+        for (jack_nframes_t i = 0; i < nframes; i++)
+        {
+
+            out[i] = temp[i] * this->volume;
+        }
+    }
+    else{
         for (jack_nframes_t i = 0; i < nframes; i++)
         {
 

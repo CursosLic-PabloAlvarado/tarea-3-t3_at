@@ -69,10 +69,12 @@ public:
     void activateFilter();
 
     bool filterOn;
+    bool filterDefOn;
     float volume;
     float volumeMultiplier;
     float k_exp;
     cascade* filterAllStages;
+    cascade* filterDefault;
 
 
     /**
