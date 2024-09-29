@@ -6,7 +6,7 @@ project('tarea3','cpp',
 jack_dep = dependency('jack')
 sndfile_dep = dependency('sndfile')
 boost_dep = dependency('boost', modules : ['program_options','system'])
-#google_benchmkark_dep = dependency('benchmark', required : true) 
+google_benchmkark_dep = dependency('benchmark', required : true) 
 
 all_deps = [jack_dep,sndfile_dep,boost_dep]
 sources = files('main.cpp', 'jack_client.cpp','passthrough_client.cpp',

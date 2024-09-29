@@ -24,6 +24,10 @@ private:
     int maxOrder;
     std::vector<float> b;
     std::vector<float> a;
+
+    float a0, a1, a2;
+    float b0, b1, b2;
+
     float x0;
     float x1;
     float x2;
