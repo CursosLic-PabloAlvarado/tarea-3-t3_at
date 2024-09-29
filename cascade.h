@@ -14,7 +14,7 @@ class cascade {
 public:
     cascade(std::vector<std::vector<float>>& coefsIn);
     void process(int nframes, const float * __restrict in, float * __restrict out);
-    __m256 subProcessVector(int stage, __m256 inputVec);
+    __m128 subProcessVector(int stage, __m128 inputVec);
 
 private:
     std::vector<biquad*> stages; 
