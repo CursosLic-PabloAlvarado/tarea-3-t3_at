@@ -170,6 +170,40 @@ int main(int argc, char *argv[])
           }
 
           std::cout << "Repeat playing files" << std::endl;
+        }case 'o':
+        {
+          std::cout << "Passthrough activated" << std::endl;
+          client.deactivateModes();
+
+        }
+        break;
+        case 'p':
+        {
+          std::cout << "Default filter activated" << std::endl;
+          client.activateFilterDefault();
+
+        }
+        break;
+        case 'c':
+        {
+          std::cout << "Loaded filter activated" << std::endl;
+          client.activateFilter();
+
+        }
+        break;
+        case '+':
+        {
+          std::cout << "Volume increment" << std::endl;
+          client.incrementVolume();
+          client.configureVolume();
+
+        }
+        break;
+        case '-':
+        {
+          std::cout << "Volume decrement" << std::endl;
+          client.decreaseVolume();
+          client.configureVolume();
         }
         break;
         default:
@@ -177,33 +211,7 @@ int main(int argc, char *argv[])
           if (key > 32)
           {
             std::cout << "Key " << char(key) << " pressed" << std::endl;
-            if (key == 'o')
-            {
-              std::cout << "Passthrough activated" << std::endl;
-              client.deactivateModes();
-            }
-            else if (key == 'p')
-            {
-              std::cout << "Default filter activated" << std::endl;
-              client.activateFilterDefault();
-            }
-            else if (key == 'c')
-            {
-              std::cout << "Loaded filter activated" << std::endl;
-              client.activateFilter();
-            }
-            else if (key == '+')
-            {
-              std::cout << "Volume increment" << std::endl;
-              client.incrementVolume();
-              client.configureVolume();
-            }
-            else if (key == '-')
-            {
-              std::cout << "Volume decrement" << std::endl;
-              client.decreaseVolume();
-              client.configureVolume();
-            }
+            
           }else
           {
             std::cout << "Key " << key << " pressed" << std::endl;
