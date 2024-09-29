@@ -76,9 +76,11 @@ void cascade::process(int nframes, const float *in, float *out)
 
     int i = 0;
 
-    __m256 resultVec1 = inputVec;
+    __m256 resultVec1;
     __m256 resultVec2;
     __m256 resultVec3;
+
+    
     // Procesamiento con AVX para bloques de 8 muestras
     for (; i <= nframes - simdWidth; i += simdWidth)
     {
