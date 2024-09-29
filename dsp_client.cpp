@@ -97,12 +97,14 @@ void dsp_client::activateFilter()
 {
 
     filterOn = true;
+    filterDefOn = false;
 }
 
 void dsp_client::activateFilterDefault()
 {
 
     filterDefOn = true;
+    filterOn = false;
 }
 
 void dsp_client::deactivateModes()
