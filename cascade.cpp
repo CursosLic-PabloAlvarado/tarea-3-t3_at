@@ -14,7 +14,7 @@ cascade::cascade(std::vector<std::vector<float>> &coefsIn)
         this->stages[i] = new biquad(this->coefs[i]);
     }
 }
-
+/*
 void cascade::process(int nframes, const float *const in, float * const out){
 
 
@@ -40,11 +40,8 @@ void cascade::process(int nframes, const float *const in, float * const out){
 
 
 }
+*/
 
-
-
-
-/*
 __m128 cascade::subProcessVector(int stage, __m128 inputVec)
 {
 
@@ -105,4 +102,4 @@ void cascade::process(int nframes, const float * __restrict in, float * __restri
         _mm_storeu_ps(&out[i], resultVec3);
     }
 }
-*/
+
