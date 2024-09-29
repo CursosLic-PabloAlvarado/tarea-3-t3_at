@@ -9,6 +9,7 @@
 
 class biquad {
 public:
+    biquad(){}
     biquad(std::vector<float>& coefsIn);
     
     void numExtractor();
