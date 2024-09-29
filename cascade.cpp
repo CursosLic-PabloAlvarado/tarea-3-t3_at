@@ -18,6 +18,7 @@ cascade::cascade(std::vector<std::vector<float>>& coefsIn){
 
 void cascade::process(int nframes, const float *const in, float * const out){
 
+    /*  
     float* temp = new float[nframes];
     float* tempOut = new float[nframes];
 
@@ -29,17 +30,18 @@ void cascade::process(int nframes, const float *const in, float * const out){
     }
     memcpy(out, temp, sizeof(float)*nframes);
 
+    */
+
     //Procesar encadenando muestra por muestra
-    /*  
+
     std::vector<float> partialResults(this->maxOrder+1);
     partialResults[0] = in[i];
     for (int i=0; i<nframes ; i++){
         for (int j=0; j<this->maxOrder; j++){
             this->stages[i]->processOne(partialResults[j], partialResults[j+1]);
         }
-        output[i] = partialResults[this->maxOrder];
+        out[i] = partialResults[this->maxOrder];
     }
-    */
     
 
 }
