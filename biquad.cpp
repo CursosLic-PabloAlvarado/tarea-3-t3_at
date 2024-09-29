@@ -16,8 +16,8 @@ biquad::biquad(std::vector<float> &coefsIn)
     this->denExtractor();
     this->numExtractor();
 
-    this->w1_pastVec = _mm128_set1_ps(0);
-    this->w2_pastVec = _mm128_set1_ps(0);
+    this->w1_pastVec = _mm_set1_ps(0);
+    this->w2_pastVec = _mm_set1_ps(0);
 
     this->x0 = 0.0;
     this->x1 = 0.0;
