@@ -37,7 +37,7 @@ void cascade::process(int nframes, const float *const in, float * const out){
     std::vector<float> partialResults(this->maxOrder+1);
     
     for (int i=0; i<nframes ; i++){
-        partialResults[i] = in[i];
+        partialResults[0] = in[i];
         for (int j=0; j<this->maxOrder; j++){
             partialResults[j+1] = this->stages[j]->processOne(partialResults[j]);
         }
