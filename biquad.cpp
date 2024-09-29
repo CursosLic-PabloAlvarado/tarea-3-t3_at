@@ -59,18 +59,20 @@ void biquad::applyFilter(const float *const input, float *const output, int nFra
     {
 
         // Forma directa
+        /*
         output[n] = this->b[0] * input[n] + this->b[1] * x1 + this->b[2] * x2 - this->a[1] * y1 - this->a[2] * y2;
         this->x1 = input[n];
         this->x2 = this->x1;
         this->y1 = output[n];
         this->y2 = this->y1;
+        */
 
         // Forma transpuesta
-        /*
+
         output[n] = this->b[0]*input[n] + this->w1_past;
         this->w1_past = this->b[1]*input[n] - this->a[1]*output[n] + this->w2_past;
         this->w2_past = this->b[2]*input[n] - this->a[2]*output[n];
-        */
+
     }
 }
 
