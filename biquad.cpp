@@ -16,6 +16,9 @@ biquad::biquad(std::vector<float> &coefsIn)
     this->denExtractor();
     this->numExtractor();
 
+    this->w1_pastVec = _mm256_set1_ps(0);
+    this->w2_pastVec = _mm256_set1_ps(0);
+
     this->x0 = 0.0;
     this->x1 = 0.0;
     this->x2 = 0.0;
@@ -116,3 +119,4 @@ float biquad::processOne(float input)
     return output;
     
 }
+
