@@ -90,20 +90,20 @@ float biquad::processOne(float input)
 {
     // Forma directa
 
- 
+    /*  
     float output = this->b[0] * input + this->b[1] * x1 + this->b[2] * x2 - this->a[1] * y1 - this->a[2] * y2;
     this->x1 = input;
     this->x2 = this->x1;
     this->y1 = output;
     this->y2 = this->y1;
 
-
+    */
     // Forma transpuesta
-    /*  
+
     float output = this->b[0]*input + this->w1_past;
     this->w1_past = this->b[1]*input - this->a[1]*output + this->w2_past;
     this->w2_past = this->b[2]*input - this->a[2]*output;
-    */
+
     return output;
     
 }
