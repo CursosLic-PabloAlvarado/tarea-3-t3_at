@@ -170,7 +170,9 @@ int main(int argc, char *argv[])
           }
 
           std::cout << "Repeat playing files" << std::endl;
-        }case 'o':
+        }
+        break;
+        case 'o':
         {
           std::cout << "Passthrough activated" << std::endl;
           client.deactivateModes();
