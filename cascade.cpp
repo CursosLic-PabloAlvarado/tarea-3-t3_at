@@ -10,7 +10,7 @@ cascade::cascade(std::vector<std::vector<float>>& coefsIn){
 
     for (int i=0; i <this->maxOrder; i++){
         std::cout << "Etapa " << i <<std::endl;
-        this->stages[i] = biquad(this->coefs[i]);
+        this->stages[i] = new biquad(this->coefs[i]);
         
     }
 }
@@ -24,7 +24,7 @@ void cascade::process(int nframes, const float *const in, float * const out){
     memcpy(temp, in, sizeof(float)*nframes);
     //Procesar en cascada-serie
     for (int i=0; i<this->maxOrder; i++){
-        this->stages[i].process(nframes, temp, tempOut);
+        this->stages[i]->process(nframes, temp, tempOut);
         memcpy(temp, tempOut, sizeof(float)*nframes);
     }
     memcpy(out, temp, sizeof(float)*nframes);

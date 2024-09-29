@@ -10,6 +10,9 @@ biquad::biquad(std::vector<float> &coefsIn)
         std::cout << "Coeficiente cargado: " << this->coefs[i] << "fila " << i << std::endl;
     }
 
+    this->a.resize(3);
+    this->b.resize(3);
+
     this->denExtractor();
     this->numExtractor();
 
