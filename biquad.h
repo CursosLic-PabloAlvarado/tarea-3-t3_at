@@ -34,7 +34,7 @@ public:
     float w1_past;
 
     __m256 w1_pastVec;
-    __m256 w2_pastVec 
+    __m256 w2_pastVec;
 
 private:
     std::vector<float> coefs;
