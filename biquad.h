@@ -6,6 +6,7 @@
 #include "jack_client.h"
 #include <cstdlib>
 #include <iostream>
+#include <immintrin.h>
 
 
 class biquad {
