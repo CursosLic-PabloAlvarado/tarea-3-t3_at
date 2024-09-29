@@ -148,6 +148,7 @@ bool dsp_client::process(jack_nframes_t nframes,
         }
     }
     else{
+        std::cout << "Entra en pass" << std::endl;
         for (jack_nframes_t i = 0; i < nframes; i++)
         {
 
