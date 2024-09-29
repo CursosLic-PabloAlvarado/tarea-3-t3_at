@@ -96,21 +96,21 @@ void dsp_client::configureFilter(std::vector<std::vector<sample_t>> &coefs)
 void dsp_client::activateFilter()
 {
 
-    filterOn = true;
-    filterDefOn = false;
+    this->filterOn = true;
+    this->filterDefOn = false;
 }
 
 void dsp_client::activateFilterDefault()
 {
 
-    filterDefOn = true;
-    filterOn = false;
+    this->filterDefOn = true;
+    this->filterOn = false;
 }
 
 void dsp_client::deactivateModes()
 {
-    filterOn = false;
-    filterDefOn = false;
+    this->filterOn = false;
+    this->filterDefOn = false;
 }
 
 /**
@@ -128,7 +128,7 @@ bool dsp_client::process(jack_nframes_t nframes,
 
     float * temp = new float[nframes];
 
-    if (filterOn)
+    if (this->filterOn)
     {
 
         this->filterAllStages->process(nframes, in, temp);
@@ -138,7 +138,7 @@ bool dsp_client::process(jack_nframes_t nframes,
 
             out[i] = temp[i] * this->volume;
         }
-    }else if(filterDefault){
+    }else if(this->filterDefault){
         this->filterDefault->process(nframes, in, temp);
 
         for (jack_nframes_t i = 0; i < nframes; i++)
