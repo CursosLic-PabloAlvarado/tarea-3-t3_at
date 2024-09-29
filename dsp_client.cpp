@@ -138,7 +138,8 @@ bool dsp_client::process(jack_nframes_t nframes,
 
             out[i] = temp[i] * this->volume;
         }
-    }else if(this->filterDefault){
+    }else if(this->filterDefOn){
+        
         this->filterDefault->process(nframes, in, temp);
 
         for (jack_nframes_t i = 0; i < nframes; i++)
@@ -148,7 +149,7 @@ bool dsp_client::process(jack_nframes_t nframes,
         }
     }
     else{
-        std::cout << "Entra en pass" << std::endl;
+        
         for (jack_nframes_t i = 0; i < nframes; i++)
         {
 
