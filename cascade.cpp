@@ -97,10 +97,10 @@ void cascade::process(int nframes, const float *in, float *out)
         {
             resultVec1 = this->subProcessVector(0, inputVec);
             resultVec2 = this->subProcessVector(1, resultVec1);
-            resultVec3 = resultVec2
+            resultVec3 = resultVec2;
         }
 
         // Guardar el resultado procesado
-        _mm256256_storeu_ps(&out[i], resultVec3);
+        _mm256_storeu_ps(&out[i], resultVec3);
     }
 }
