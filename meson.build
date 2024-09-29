@@ -13,7 +13,7 @@ sources = files('main.cpp', 'jack_client.cpp','passthrough_client.cpp',
                 'sndfile_thread.cpp','waitkey.cpp', 'dsp_client.cpp', 'biquad.cpp', 'cascade.cpp')
 
 # Añadir las banderas de optimización y símbolos de depuración
-opt_flags = ['-O3', '-g']
+opt_flags = ['-O3', '-g', '-mavx']
 
 executable('tarea3', sources,
            dependencies: all_deps,
