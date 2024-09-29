@@ -49,8 +49,7 @@ void cascade::process(int nframes, const float *const in, float * const out){
 }
 */
 
-
-inline void cascade::process(int nframes, const float * __restrict in, float * __restrict out)
+void cascade::process(int nframes, const float * __restrict in, float * __restrict out)
 {
     const int simdWidth = 8; // Número de floats que AVX puede procesar en paralelo
 

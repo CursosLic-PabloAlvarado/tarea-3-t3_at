@@ -13,7 +13,7 @@
 class cascade {
 public:
     cascade(std::vector<std::vector<float>>& coefsIn);
-    inline void process(int nframes, const float * __restrict in, float * __restrict out);
+    void process(int nframes, const float * __restrict in, float * __restrict out);
     
 
 private:
