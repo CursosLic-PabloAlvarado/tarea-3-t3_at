@@ -17,7 +17,7 @@ public:
     void getMaxOrder();
     void applyFilter(const float *const input, float *const output, int nFrames);
     void process(int nframes, const float *const in, float *const out);
-    void processOne(float input, float output);
+    float processOne(float input);
 
 private:
     std::vector<float> coefs;

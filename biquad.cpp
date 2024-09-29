@@ -86,7 +86,7 @@ void biquad::process(int nframes, const float *const in, float *const out)
     this->applyFilter(in, out, nframes);
 }
 
-void biquad::processOne(float input, float output)
+float biquad::processOne(float input)
 {
     // Forma directa
 
@@ -100,9 +100,10 @@ void biquad::processOne(float input, float output)
 
     // Forma transpuesta
 
-    output = this->b[0]*input + this->w1_past;
+    float output = this->b[0]*input + this->w1_past;
     this->w1_past = this->b[1]*input - this->a[1]*output + this->w2_past;
     this->w2_past = this->b[2]*input - this->a[2]*output;
 
+    return output;
     
 }
