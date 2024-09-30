@@ -44,7 +44,7 @@ void cascade::process(int nframes, const float *const in, float * const out){
 
 __m128 cascade::subProcessVector(int stage, __m128 inputVec)
 {
-
+    /* 
     // Variables para almacenar el estado anterior de cada biquad
     __m128 b0Vec = _mm_set1_ps(this->stages[stage]->b0);
     __m128 b1Vec = _mm_set1_ps(this->stages[stage]->b1);
@@ -64,6 +64,10 @@ __m128 cascade::subProcessVector(int stage, __m128 inputVec)
     // Guardar el estado actualizado
     this->stages[stage]->w1_pastVec = w1_pastVec; // Usar la primera muestra de w1_pastVec
     this->stages[stage]->w2_pastVec = w2_pastVec; // Usar la primera muestra de w2_pastVec
+
+    */
+
+    __m128 outputVec = this->stages[stage]->processVectorial(inputVec);
 
     return outputVec;
 }
