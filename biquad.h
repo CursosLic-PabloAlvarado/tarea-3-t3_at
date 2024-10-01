@@ -33,6 +33,12 @@ public:
     float w2_past;
     float w1_past;
 
+    __m128 b0Vec;
+    __m128 b1Vec;
+    __m128 b2Vec;
+    __m128 a1Vec;
+    __m128 a2Vec;
+
     __m128 w1_pastVec;
     __m128 w2_pastVec;
 
