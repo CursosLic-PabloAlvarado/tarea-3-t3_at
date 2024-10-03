@@ -4,11 +4,12 @@
 biquad::biquad(std::vector<float> &coefsIn)
 {
     this->coefs = coefsIn;
-
+    /* 
     for (int i = 0; i < this->coefs.size(); i++)
     {
         std::cout << "Coeficiente cargado: " << this->coefs[i] << "fila " << i << std::endl;
     }
+    */
 
     //this->a.resize(3);
     //this->b.resize(3);
