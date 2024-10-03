@@ -17,7 +17,7 @@ cascade::cascade(std::vector<std::vector<float>> &coefsIn)
 
 
 //Forma transpuesta sin loop unrooling, el buffer se recorre n veces para las etapas
-/* 
+
 void cascade::process(int nframes, const float *const in, float *const out)
 {
 
@@ -43,7 +43,7 @@ void cascade::process(int nframes, const float *const in, float *const out)
     }
 }
 
-*/
+
 //Forma transpuesta con loop unrooling, el buffer se recorre 1 vez para las etapas, se trabaja muestra por muestra
 /*
 void cascade::process(int nframes, const float *const in, float * const out){
@@ -105,7 +105,7 @@ __m128 cascade::subProcessVector(int stage, __m128 inputVec)
 }
 
 //Forma transpuesta con loop unrooling, procesamiento vectorial, el buffer se recorre 1 vez para las etapas, se trabaja en 4 muestras con shifts
-
+/* 
 void cascade::process(int nframes, const float *__restrict in, float *__restrict out)
 {
     const int simdWidth = 4;
@@ -139,3 +139,4 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
         _mm_storeu_ps(&out[i], resultVec3);
     }
 }
+*/
