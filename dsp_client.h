@@ -60,12 +60,41 @@ public:
      */
     dsp_client();
     ~dsp_client();
+
+    /**
+    * Incrementa en una unidad el volumen de la salida.
+    * 
+    */
     void incrementVolume();
+    /**
+    * Disminuye en una unidad el volumen de la salida.
+    * 
+    */
     void decreaseVolume();
+    /**
+    * Aplica una normalización exponencial al volumen para notar más las subidas en volúmenes altos.
+    * 
+    */
     void configureVolume();
+    /**
+    * Establece los objetos cascade (el default y el del usuario si pone coeficientes) 
+    * Recibe un vector bidimensional de vectores.
+    */
     void configureFilter(std::vector<std::vector<sample_t>>& coefs);
+    /**
+    * Coloca el modo passthrough, reflejando directamente la entrada en la salida.
+    * 
+    */
     void deactivateModes();
+    /**
+    * Activa el modo con el filtro por defecto.
+    * 
+    */
     void activateFilterDefault();
+    /**
+    * Activa el modo con el filtro establecido por el usuario.
+    * 
+    */
     void activateFilter();
 
     bool filterOn;
@@ -78,7 +107,7 @@ public:
 
 
     /**
-     * Passthrough functionality
+     * Función que refleja a jack el procesamiento realizado a un buffer de nframes para la entrada y la salida.
      */
     virtual bool process(jack_nframes_t nframes,
                          const sample_t *const in,
