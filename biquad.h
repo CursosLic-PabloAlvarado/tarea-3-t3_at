@@ -12,38 +12,38 @@
 class biquad {
 public:
     /**
-    Constructor por defecto
+    * Constructor por defecto
     */
     biquad(){}
     /**
-    Constructor utilizado, recibe un vector de coeficientes de la matriz de la etapa bi cuadrática.
+    * Constructor utilizado, recibe un vector de coeficientes de la matriz de la etapa bi cuadrática.
     */
     biquad(std::vector<float>& coefsIn);
     /**
-    Asigna a las variables b los coeficientes del numerador.
+    * Asigna a las variables b los coeficientes del numerador.
     */
     void numExtractor();
     /**
-    Asigna a las variables a los coeficientes del denominador.
+    * Asigna a las variables a los coeficientes del denominador.
     */
     void denExtractor();
 
     void getMaxOrder();
 
     /**
-    Función interna auxiliar de process para aplicar el filtro según los datos recibidos. Actúa secuencialmente con n buffers.
+    * Función interna auxiliar de process para aplicar el filtro según los datos recibidos. Actúa secuencialmente con n buffers.
     */
     void applyFilter(const float *const input, float *const output, int nFrames);
     /**
-    Función para procesar nframes cantidad de muestras de la variable in hacia la variable out según el filtro cargado.
+    * Función para procesar nframes cantidad de muestras de la variable in hacia la variable out según el filtro cargado.
     */
     void process(int nframes, const float *const in, float *const out);
     /**
-    Función auxiliar de process para procesar una sola muestra
+    * Función auxiliar de process para procesar una sola muestra
     */
     float processOne(float input);
     /**
-    Función auxiliar de process para procesar vectores de muestras haciendo uso de registros
+    * Función auxiliar de process para procesar vectores de muestras haciendo uso de registros
     */
     __m128 processVectorial(__m128 __restrict vectorIn);
 
