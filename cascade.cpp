@@ -46,7 +46,7 @@ void cascade::process(int nframes, const float *const in, float *const out)
 */
 
 //Forma transpuesta con loop unrooling, el buffer se recorre 1 vez para las etapas, se trabaja muestra por muestra
-
+/* 
 void cascade::process(int nframes, const float *const in, float * const out){
 
 
@@ -72,6 +72,7 @@ void cascade::process(int nframes, const float *const in, float * const out){
 
 
 }
+*/
 
 
 
@@ -106,7 +107,7 @@ __m128 cascade::subProcessVector(int stage, __m128 inputVec)
 }
 
 //Forma transpuesta con loop unrooling, procesamiento vectorial, el buffer se recorre 1 vez para las etapas, se trabaja en 4 muestras con shifts
-/* 
+
 void cascade::process(int nframes, const float *__restrict in, float *__restrict out)
 {
     const int simdWidth = 4;
@@ -117,7 +118,7 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
     __m128 resultVec2;
     __m128 resultVec3;
 
-    // Procesamiento con AVX para bloques de 8 muestras
+
     for (; i <= nframes - simdWidth; i += simdWidth)
     {
         // Cargar 8 muestras de entrada
@@ -140,4 +141,3 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
         _mm_storeu_ps(&out[i], resultVec3);
     }
 }
-*/
