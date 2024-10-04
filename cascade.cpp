@@ -98,7 +98,7 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
     __m128 resultVec3;
 
     // Procesar bloques de 4 muestras usando SIMD
-    for (; i <= nframes - simdWidth; i += 1)
+    for (; i <= nframes - simdWidth; i += simdWidth)
     {
         // Cargar 4 muestras de entrada
         __m128 inputVec = _mm_loadu_ps(&in[i]);

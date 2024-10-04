@@ -122,9 +122,9 @@ static void BM_Cascade_Process_Impulse(benchmark::State& state) {
     dut.process(size, input, output);
     
     // Imprimir la salida en cada iteración
-    std::cout << "Output: ";
+    //std::cout << "Output: ";
     for (int i = 0; i < size; ++i) {
-      std::cout << output[i] << " ";
+    //  std::cout << output[i] << " ";
     }
     std::cout << std::endl;
   }
@@ -133,6 +133,6 @@ static void BM_Cascade_Process_Impulse(benchmark::State& state) {
   //state.SetComplexityN(size);
 }
 
-//BENCHMARK(BM_Cascade_Process_Impulse)->Range(1024, 1024);
+BENCHMARK(BM_Cascade_Process_Impulse)->Range(1024, 1024);
 
 BENCHMARK_MAIN();

@@ -128,17 +128,50 @@ float biquad::processOne(float input)
     
 }
 
-__m128 biquad::processVectorial(__m128 __restrict vectorIn){
-
-
-
+__m128 biquad::processVectorial(__m128 __restrict vectorIn) {
+    // Imprimir el vector de entrada
+    float inputArray[4];
+    _mm_storeu_ps(inputArray, vectorIn); // Cargar el vector en un array para imprimir
+    std::cout << "Input Vector: [" 
+              << inputArray[0] << ", " 
+              << inputArray[1] << ", " 
+              << inputArray[2] << ", " 
+              << inputArray[3] << "]" << std::endl;
 
     // Aplicar el filtro biquad transpuesto para 4 muestras
     __m128 outputVec = _mm_add_ps(_mm_mul_ps(this->b0Vec, vectorIn), this->w1_pastVec);
+    
+    // Imprimir el vector de salida intermedio
+    float outputArray[4];
+    _mm_storeu_ps(outputArray, outputVec); // Cargar el vector en un array para imprimir
+    std::cout << "Intermediate Output Vector: [" 
+              << outputArray[0] << ", " 
+              << outputArray[1] << ", " 
+              << outputArray[2] << ", " 
+              << outputArray[3] << "]" << std::endl;
+
     this->w1_pastVec = _mm_add_ps(_mm_sub_ps(_mm_mul_ps(this->b1Vec, vectorIn), _mm_mul_ps(this->a1Vec, outputVec)), this->w2_pastVec);
+    
+    // Imprimir w1_pastVec
+    float w1Array[4];
+    _mm_storeu_ps(w1Array, this->w1_pastVec); // Cargar el vector en un array para imprimir
+    std::cout << "w1_pastVec: [" 
+              << w1Array[0] << ", " 
+              << w1Array[1] << ", " 
+              << w1Array[2] << ", " 
+              << w1Array[3] << "]" << std::endl;
+
     this->w2_pastVec = _mm_sub_ps(_mm_mul_ps(this->b2Vec, vectorIn), _mm_mul_ps(this->a2Vec, outputVec));
+    
+    // Imprimir w2_pastVec
+    float w2Array[4];
+    _mm_storeu_ps(w2Array, this->w2_pastVec); // Cargar el vector en un array para imprimir
+    std::cout << "w2_pastVec: [" 
+              << w2Array[0] << ", " 
+              << w2Array[1] << ", " 
+              << w2Array[2] << ", " 
+              << w2Array[3] << "]" << std::endl;
 
-
-    return outputVec;
-
+    // Imprimir el vector de salida final
+    return outputVec; // Retornar el vector de salida
 }
