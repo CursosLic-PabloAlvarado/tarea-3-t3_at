@@ -39,15 +39,15 @@ public:
     /**
      * Función auxiliar de process para procesar una sola muestra
      */
-    inline __attribute__((always_inline)) float processOne(float input)
+    inline __attribute__((always_inline)) float processOne(float __restrict input)
     {
 
         // Calcular la salida
-        float output = this->b0 * input + this->w1;
+        float output = this->b0 * input + this->w1_past;
 
         // Actualizar los estados pasados
-        this->w1 = this->b1 * input - this->a1 * output + this->w2;
-        this->w2 = this->b2 * input - this->a2 * output;
+        this->w1_past = this->b1 * input - this->a1 * output + this->w2_past;
+        this->w2_past = this->b2 * input - this->a2 * output;
 
         return output;
     }
