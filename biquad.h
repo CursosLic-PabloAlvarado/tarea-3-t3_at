@@ -58,6 +58,9 @@ public:
     float w2_past;
     float w1_past;
 
+    float * w2_past_point;
+    float * w1_past_point;
+
     __m128 b0Vec;
     __m128 b1Vec;
     __m128 b2Vec;

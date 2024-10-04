@@ -6,7 +6,7 @@ coefs = {
 };
 
 % Tamaño de la señal
-size = 1024;
+size = 256;
 
 % Crear el pulso unitario
 input_signal = zeros(1, size);
