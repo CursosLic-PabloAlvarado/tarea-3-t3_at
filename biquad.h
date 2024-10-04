@@ -39,28 +39,15 @@ public:
     /**
      * Función auxiliar de process para procesar una sola muestra
      */
-    /* inline __attribute__((always_inline)) */float processOne(float input)
+    inline __attribute__((always_inline)) float processOne(float input)
     {
-        // Utilizar punteros para minimizar el acceso a los miembros de la clase
-        float b0 = this->b0;
-        float b1 = this->b1;
-        float b2 = this->b2;
-        float a1 = this->a1;
-        float a2 = this->a2;
-
-        float w1 = this->w1_past;
-        float w2 = this->w2_past;
 
         // Calcular la salida
-        float output = b0 * input + w1;
+        float output = this->b0 * input + this->w1;
 
         // Actualizar los estados pasados
-        w1 = b1 * input - a1 * output + w2;
-        w2 = b2 * input - a2 * output;
-
-        // Guardar los nuevos estados de vuelta a la clase
-        this->w1_past = w1;
-        this->w2_past = w2;
+        this->w1 = this->b1 * input - this->a1 * output + this->w2;
+        this->w2 = this->b2 * input - this->a2 * output;
 
         return output;
     }
