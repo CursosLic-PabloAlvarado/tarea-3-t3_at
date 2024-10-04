@@ -47,34 +47,28 @@ void cascade::process(int nframes, const float *const in, float *const out)
 
 //Forma transpuesta con loop unrooling, el buffer se recorre 1 vez para las etapas, se trabaja muestra por muestra
 
-/*
-void cascade::process(int nframes, const float *const in, float * const out){
+void cascade::process(int nframes, const float *const in, float *const out) {
+    // Procesar encadenando muestra por muestra
+    float partialResults[4]; // Tamaño fijo para maxOrder = 3
 
-
-    //Procesar encadenando muestra por muestra
-
-    std::vector<float> partialResults(this->maxOrder+1);
-
-    for (int i=0; i<nframes ; i++){
+    for (int i = 0; i < nframes; i++) {
+        // Inicializar la entrada
         partialResults[0] = in[i];
 
-        if (this->maxOrder == 3){
+        // Procesar etapas del filtro
+        if (this->maxOrder == 3) {
             partialResults[1] = this->stages[0]->processOne(partialResults[0]);
             partialResults[2] = this->stages[1]->processOne(partialResults[1]);
-            partialResults[3] = this->stages[2]->processOne(partialResults[2]);
-        }else{
+            out[i] = this->stages[2]->processOne(partialResults[2]); // Almacena el resultado final directamente
+        } else {
             partialResults[1] = this->stages[0]->processOne(partialResults[0]);
-            partialResults[2] = this->stages[1]->processOne(partialResults[1]);
+            out[i] = this->stages[1]->processOne(partialResults[1]); // Almacena el resultado final directamente
         }
-
-
-        out[i] = partialResults[this->maxOrder];
     }
-
-
 }
 
-*/
+
+
 
 
 __m128 cascade::subProcessVector(int stage, __m128 inputVec)
@@ -89,6 +83,7 @@ __m128 cascade::subProcessVector(int stage, __m128 inputVec)
 //Forma transpuesta con loop unrooling, procesamiento vectorial, el buffer se recorre 1 vez para las etapas, se trabaja en 4 muestras con shifts
 
 
+/*  
 
 void cascade::process(int nframes, const float *__restrict in, float *__restrict out)
 {
@@ -124,4 +119,4 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
         _mm_storeu_ps(&out[i], resultVec3);
     }
 }
-
+*/

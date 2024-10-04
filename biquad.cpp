@@ -105,31 +105,36 @@ void biquad::process(int nframes, const float *const in, float *const out)
     this->applyFilter(in, out, nframes);
 }
 
-float biquad::processOne(float input)
-{
-    // Forma directa
+inline __attribute__((always_inline)) float biquad::processOne(float input) {
+    // Utilizar punteros para minimizar el acceso a los miembros de la clase
+    float b0 = this->b0;
+    float b1 = this->b1;
+    float b2 = this->b2;
+    float a1 = this->a1;
+    float a2 = this->a2;
+    
+    float w1 = this->w1_past;
+    float w2 = this->w2_past;
 
-    /*
-    float output = this->b[0] * input + this->b[1] * x1 + this->b[2] * x2 - this->a[1] * y1 - this->a[2] * y2;
-    this->x1 = input;
-    this->x2 = this->x1;
-    this->y1 = output;
-    this->y2 = this->y1;
+    // Calcular la salida
+    float output = b0 * input + w1;
 
-    */
-    // Forma transpuesta
+    // Actualizar los estados pasados
+    w1 = b1 * input - a1 * output + w2;
+    w2 = b2 * input - a2 * output;
 
-    float output = this->b0 * input + this->w1_past;
-    this->w1_past = this->b1 * input - this->a1 * output + this->w2_past;
-    this->w2_past = this->b2 * input - this->a2 * output;
+    // Guardar los nuevos estados de vuelta a la clase
+    this->w1_past = w1;
+    this->w2_past = w2;
 
     return output;
 }
 
+
+
 __m128 biquad::processVectorial(__m128 __restrict vectorIn)
 {
     __m128 outputVec;
-    //this->firstTime = true;
     int j;
     if (this->firstTime)
     {
@@ -159,19 +164,10 @@ __m128 biquad::processVectorial(__m128 __restrict vectorIn)
         this->w1_pastVec = _mm_loadu_ps(&w1_past_point[0]);
         this->w2_pastVec = _mm_loadu_ps(&w2_past_point[0]);
 
-        //this->firstTime = false;
+
     }
 
-    /*  
-    else
-    {
-        // Aplicar el filtro biquad transpuesto para 4 muestras
-        outputVec = _mm_add_ps(_mm_mul_ps(this->b0Vec, vectorIn), this->w1_pastVec);
-        this->w1_pastVec = _mm_add_ps(_mm_sub_ps(_mm_mul_ps(this->b1Vec, vectorIn), _mm_mul_ps(this->a1Vec, outputVec)), this->w2_pastVec);
-        this->w2_pastVec = _mm_sub_ps(_mm_mul_ps(this->b2Vec, vectorIn), _mm_mul_ps(this->a2Vec, outputVec));
-    }
 
-    */
 
     return outputVec; // Retornar el vector de salida
 }

@@ -41,7 +41,7 @@ public:
     /**
     * Función auxiliar de process para procesar una sola muestra
     */
-    float processOne(float input);
+    inline __attribute__((always_inline)) float processOne(float input);
     /**
     * Función auxiliar de process para procesar vectores de muestras haciendo uso de registros
     */
