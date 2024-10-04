@@ -69,6 +69,31 @@ void cascade::process(int nframes, const float *const in, float *const out) {
 
 
 
+void cascade::process(int nframes, const float *const in, float *const out) {
+    // Procesar encadenando muestra por muestra
+    //constexpr int maxOrder = 3; // Cambia esto si tu maxOrder es diferente
+    float partialResults[this->maxOrder + 1]; // Tamaño fijo para maxOrder = 3
+
+    // Lambda para procesar la cadena de filtros
+    auto processStages = [&](int order) {
+        partialResults[1] = this->stages[0]->processOne(partialResults[0]);
+        if (order == 3) {
+            partialResults[2] = this->stages[1]->processOne(partialResults[1]);
+            return this->stages[2]->processOne(partialResults[2]); // Resultado final para maxOrder = 3
+        } else {
+            return this->stages[1]->processOne(partialResults[1]); // Resultado final para maxOrder = 2
+        }
+    };
+
+    for (int i = 0; i < nframes; i++) {
+        // Inicializar la entrada
+        partialResults[0] = in[i];
+
+        // Procesar etapas del filtro usando la lambda
+        out[i] = processStages(this->maxOrder);
+    }
+}
+
 
 
 __m128 cascade::subProcessVector(int stage, __m128 inputVec)
