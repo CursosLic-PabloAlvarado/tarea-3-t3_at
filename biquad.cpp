@@ -129,6 +129,8 @@ float biquad::processOne(float input)
 __m128 biquad::processVectorial(__m128 __restrict vectorIn)
 {
     __m128 outputVec;
+    //this->firstTime = true;
+    int j;
     if (this->firstTime)
     {
 
@@ -140,8 +142,16 @@ __m128 biquad::processVectorial(__m128 __restrict vectorIn)
         for (int i = 0; i < 4; i++)
         {
             outputArray[i] = this->b0 * inputArray[i] + this->w1_past_point[i];
-            this->w1_past_point[i] = this->b1 * inputArray[i] - this->a1 * outputArray[i] + this->w2_past_point[i];
-            this->w2_past_point[i] = this->b2 * inputArray[i] - this->a2 * outputArray[i];
+            
+            if (i+1 == 4){
+                j = 0;
+            }else{
+                j = i+1;
+            }
+
+            this->w1_past_point[j] = this->b1 * inputArray[i] - this->a1 * outputArray[i] + this->w2_past_point[i];
+            this->w2_past_point[j] = this->b2 * inputArray[i] - this->a2 * outputArray[i];
+            
         }
 
         outputVec = _mm_loadu_ps(&outputArray[0]);
@@ -149,8 +159,10 @@ __m128 biquad::processVectorial(__m128 __restrict vectorIn)
         this->w1_pastVec = _mm_loadu_ps(&w1_past_point[0]);
         this->w2_pastVec = _mm_loadu_ps(&w2_past_point[0]);
 
-        this->firstTime = false;
+        //this->firstTime = false;
     }
+
+    /*  
     else
     {
         // Aplicar el filtro biquad transpuesto para 4 muestras
@@ -158,6 +170,8 @@ __m128 biquad::processVectorial(__m128 __restrict vectorIn)
         this->w1_pastVec = _mm_add_ps(_mm_sub_ps(_mm_mul_ps(this->b1Vec, vectorIn), _mm_mul_ps(this->a1Vec, outputVec)), this->w2_pastVec);
         this->w2_pastVec = _mm_sub_ps(_mm_mul_ps(this->b2Vec, vectorIn), _mm_mul_ps(this->a2Vec, outputVec));
     }
+
+    */
 
     return outputVec; // Retornar el vector de salida
 }
