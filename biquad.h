@@ -39,7 +39,7 @@ public:
     /**
      * Función auxiliar de process para procesar una sola muestra
      */
-    inline __attribute__((always_inline)) float processOne(float input)
+    /* inline __attribute__((always_inline)) */float processOne(float input)
     {
         // Utilizar punteros para minimizar el acceso a los miembros de la clase
         float b0 = this->b0;

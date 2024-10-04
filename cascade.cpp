@@ -47,7 +47,7 @@ void cascade::process(int nframes, const float *const in, float *const out)
 
 //Forma transpuesta con loop unrooling, el buffer se recorre 1 vez para las etapas, se trabaja muestra por muestra
 
-/* 
+
 
 void cascade::process(int nframes, const float *const __restrict in, float *const __restrict out) {
     // Procesar encadenando muestra por muestra
@@ -69,7 +69,7 @@ void cascade::process(int nframes, const float *const __restrict in, float *cons
     }
 }
 
-*/
+/*  
 
 void cascade::process(int nframes, const float *const __restrict in, float *const __restrict out) {
     // Procesar encadenando muestra por muestra
@@ -96,6 +96,7 @@ void cascade::process(int nframes, const float *const __restrict in, float *cons
     }
 }
 
+*/
 
 __m128 cascade::subProcessVector(int stage, __m128 inputVec)
 {
