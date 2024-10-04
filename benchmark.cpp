@@ -133,6 +133,6 @@ static void BM_Cascade_Process_Impulse(benchmark::State& state) {
   //state.SetComplexityN(size);
 }
 
-//BENCHMARK(BM_Cascade_Process_Impulse)->Range(256, 256);
+BENCHMARK(BM_Cascade_Process_Impulse)->Range(256, 256);
 
 BENCHMARK_MAIN();
