@@ -121,7 +121,7 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
 
     for (; i <= nframes - simdWidth; i += simdWidth)
     {
-        // Cargar 8 muestras de entrada
+        // Cargar 4 muestras de entrada
         __m128 inputVec = _mm_loadu_ps(&in[i]);
 
         if (this->maxOrder == 3)

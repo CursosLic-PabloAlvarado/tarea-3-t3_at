@@ -116,7 +116,7 @@ static void BM_Cascade_Process_Impulse(benchmark::State& state) {
   float input[size] = {0};
   input[0] = 1.0f;  // Primer valor es 1, los demás 0
 
-  float output[size] = {0};
+  float output[size];
 
   for (auto _ : state) {
     dut.process(size, input, output);
@@ -129,8 +129,8 @@ static void BM_Cascade_Process_Impulse(benchmark::State& state) {
     std::cout << std::endl;
   }
 
-  state.SetItemsProcessed(size);
-  state.SetComplexityN(size);
+  //state.SetItemsProcessed(size);
+  //state.SetComplexityN(size);
 }
 
 BENCHMARK(BM_Cascade_Process_Impulse)->Range(1024, 1024);

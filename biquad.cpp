@@ -131,18 +131,13 @@ float biquad::processOne(float input)
 __m128 biquad::processVectorial(__m128 __restrict vectorIn){
 
 
-    // Estado del filtro (w1 y w2)
-    __m128 w1_pastVec = this->w1_pastVec;
-    __m128 w2_pastVec = this->w2_pastVec;
 
-    // Aplicar el filtro biquad transpuesto para 8 muestras
-    __m128 outputVec = _mm_add_ps(_mm_mul_ps(this->b0Vec, vectorIn), w1_pastVec);
-    w1_pastVec = _mm_add_ps(_mm_sub_ps(_mm_mul_ps(this->b1Vec, vectorIn), _mm_mul_ps(this->a1Vec, outputVec)), w2_pastVec);
-    w2_pastVec = _mm_sub_ps(_mm_mul_ps(this->b2Vec, vectorIn), _mm_mul_ps(this->a2Vec, outputVec));
 
-    // Guardar el estado actualizado
-    this->w1_pastVec = w1_pastVec; // Usar la primera muestra de w1_pastVec
-    this->w2_pastVec = w2_pastVec; // Usar la primera muestra de w2_pastVec
+    // Aplicar el filtro biquad transpuesto para 4 muestras
+    __m128 outputVec = _mm_add_ps(_mm_mul_ps(this->b0Vec, vectorIn), this->w1_pastVec);
+    this->w1_pastVec = _mm_add_ps(_mm_sub_ps(_mm_mul_ps(this->b1Vec, vectorIn), _mm_mul_ps(this->a1Vec, outputVec)), this->w2_pastVec);
+    this->w2_pastVec = _mm_sub_ps(_mm_mul_ps(this->b2Vec, vectorIn), _mm_mul_ps(this->a2Vec, outputVec));
+
 
     return outputVec;
 
