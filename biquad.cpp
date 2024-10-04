@@ -14,8 +14,6 @@ biquad::biquad(std::vector<float> &coefsIn)
     // this->a.resize(3);
     // this->b.resize(3);
 
-    this->firstTime = true;
-
     this->denExtractor();
     this->numExtractor();
 
@@ -67,12 +65,6 @@ void biquad::denExtractor()
     a0 = this->coefs[3];
     a1 = this->coefs[4];
     a2 = this->coefs[5];
-}
-
-// Obtener el máximo número de etapas del filtro (el orden del filtro)
-void biquad::getMaxOrder()
-{
-    this->maxOrder = this->coefs.size(); // Número de etapas es el tamaño del vector de coeficientes
 }
 
 void biquad::applyFilter(const float *const input, float *const output, int nFrames)

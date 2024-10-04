@@ -28,8 +28,6 @@ public:
      */
     void denExtractor();
 
-    void getMaxOrder();
-
     /**
      * Función interna auxiliar de process para aplicar el filtro según los datos recibidos. Actúa secuencialmente con n buffers.
      */
@@ -98,7 +96,6 @@ public:
 
 private:
     std::vector<float> coefs;
-    int maxOrder;
     std::vector<float> b;
     std::vector<float> a;
 };
