@@ -105,32 +105,6 @@ void biquad::process(int nframes, const float *const in, float *const out)
     this->applyFilter(in, out, nframes);
 }
 
-inline __attribute__((always_inline)) float biquad::processOne(float input) {
-    // Utilizar punteros para minimizar el acceso a los miembros de la clase
-    float b0 = this->b0;
-    float b1 = this->b1;
-    float b2 = this->b2;
-    float a1 = this->a1;
-    float a2 = this->a2;
-    
-    float w1 = this->w1_past;
-    float w2 = this->w2_past;
-
-    // Calcular la salida
-    float output = b0 * input + w1;
-
-    // Actualizar los estados pasados
-    w1 = b1 * input - a1 * output + w2;
-    w2 = b2 * input - a2 * output;
-
-    // Guardar los nuevos estados de vuelta a la clase
-    this->w1_past = w1;
-    this->w2_past = w2;
-
-    return output;
-}
-
-
 
 __m128 biquad::processVectorial(__m128 __restrict vectorIn)
 {

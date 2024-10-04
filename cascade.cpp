@@ -49,7 +49,7 @@ void cascade::process(int nframes, const float *const in, float *const out)
 
 void cascade::process(int nframes, const float *const in, float *const out) {
     // Procesar encadenando muestra por muestra
-    float partialResults[4]; // Tamaño fijo para maxOrder = 3
+    float partialResults[3]; // Tamaño fijo para maxOrder = 3
 
     for (int i = 0; i < nframes; i++) {
         // Inicializar la entrada
