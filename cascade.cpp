@@ -101,7 +101,7 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
     for (; i <= nframes - simdWidth; i += simdWidth)
     {
         // Cargar 4 muestras de entrada
-        __m128 inputVec = _mm_load_ps(&in[i]);
+        __m128 inputVec = _mm_loadu_ps(in[i]);
 
         // Aplicar los filtros en cascada
         if (this->maxOrder == 3)
@@ -118,7 +118,7 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
         }
 
         // Guardar el resultado procesado
-        _mm_store_ps(&out[i], resultVec3);
+        _mm_storeu_ps(out[i], resultVec3);
     }
 }
 
