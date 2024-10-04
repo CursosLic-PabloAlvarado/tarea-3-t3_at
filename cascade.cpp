@@ -78,28 +78,7 @@ void cascade::process(int nframes, const float *const in, float * const out){
 
 __m128 cascade::subProcessVector(int stage, __m128 inputVec)
 {
-    /*
-    // Variables para almacenar el estado anterior de cada biquad
-    __m128 b0Vec = _mm_set1_ps(this->stages[stage]->b0);
-    __m128 b1Vec = _mm_set1_ps(this->stages[stage]->b1);
-    __m128 b2Vec = _mm_set1_ps(this->stages[stage]->b2);
-    __m128 a1Vec = _mm_set1_ps(this->stages[stage]->a1);
-    __m128 a2Vec = _mm_set1_ps(this->stages[stage]->a2);
 
-    // Estado del filtro (w1 y w2)
-    __m128 w1_pastVec = this->stages[stage]->w1_pastVec;
-    __m128 w2_pastVec = this->stages[stage]->w2_pastVec;
-
-    // Aplicar el filtro biquad transpuesto para 8 muestras
-    __m128 outputVec = _mm_add_ps(_mm_mul_ps(b0Vec, inputVec), w1_pastVec);
-    w1_pastVec = _mm_add_ps(_mm_sub_ps(_mm_mul_ps(b1Vec, inputVec), _mm_mul_ps(a1Vec, outputVec)), w2_pastVec);
-    w2_pastVec = _mm_sub_ps(_mm_mul_ps(b2Vec, inputVec), _mm_mul_ps(a2Vec, outputVec));
-
-    // Guardar el estado actualizado
-    this->stages[stage]->w1_pastVec = w1_pastVec; // Usar la primera muestra de w1_pastVec
-    this->stages[stage]->w2_pastVec = w2_pastVec; // Usar la primera muestra de w2_pastVec
-
-    */
 
     __m128 outputVec = this->stages[stage]->processVectorial(inputVec);
 
@@ -118,12 +97,13 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
     __m128 resultVec2;
     __m128 resultVec3;
 
-
+    // Procesar bloques de 4 muestras usando SIMD
     for (; i <= nframes - simdWidth; i += simdWidth)
     {
         // Cargar 4 muestras de entrada
         __m128 inputVec = _mm_loadu_ps(&in[i]);
 
+        // Aplicar los filtros en cascada
         if (this->maxOrder == 3)
         {
             resultVec1 = this->subProcessVector(0, inputVec);
@@ -134,10 +114,25 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
         {
             resultVec1 = this->subProcessVector(0, inputVec);
             resultVec2 = this->subProcessVector(1, resultVec1);
-            resultVec3 = resultVec2;
+            resultVec3 = resultVec2;  // No se aplica el tercer filtro
         }
 
         // Guardar el resultado procesado
         _mm_storeu_ps(&out[i], resultVec3);
     }
+
+    // Procesar las muestras restantes
+    for (; i < nframes; ++i)
+    {
+        // Para cada muestra restante, procesar usando subProcessVector
+        if (this->maxOrder == 3)
+        {
+            out[i] = this->subProcessVector(2, this->subProcessVector(1, this->subProcessVector(0, in[i])));
+        }
+        else
+        {
+            out[i] = this->subProcessVector(1, this->subProcessVector(0, in[i]));
+        }
+    }
 }
+
