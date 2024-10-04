@@ -47,6 +47,8 @@ public:
     */
     __m128 processVectorial(__m128 __restrict vectorIn);
 
+    bool firstTime;
+
     float a0, a1, a2;
     float b0, b1, b2;
 

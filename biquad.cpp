@@ -4,15 +4,17 @@
 biquad::biquad(std::vector<float> &coefsIn)
 {
     this->coefs = coefsIn;
-    /* 
+    /*
     for (int i = 0; i < this->coefs.size(); i++)
     {
         std::cout << "Coeficiente cargado: " << this->coefs[i] << "fila " << i << std::endl;
     }
     */
 
-    //this->a.resize(3);
-    //this->b.resize(3);
+    // this->a.resize(3);
+    // this->b.resize(3);
+
+    this->firstTime = true;
 
     this->denExtractor();
     this->numExtractor();
@@ -42,7 +44,7 @@ biquad::biquad(std::vector<float> &coefsIn)
 // Extraer los coeficientes del numerador de una etapa específica
 void biquad::numExtractor()
 {
-    /*  
+    /*
     for (int i = 0; i < 3; i++)
     {
         this->b[i] = this->coefs[i];
@@ -56,7 +58,7 @@ void biquad::numExtractor()
 // Extraer los coeficientes del denominador de una etapa específica
 void biquad::denExtractor()
 {
-    /*  
+    /*
     for (int i = 0; i < 3; i++)
     {
         this->a[i] = this->coefs[i + 3]; // Ajuste de índice
@@ -65,7 +67,6 @@ void biquad::denExtractor()
     a0 = this->coefs[3];
     a1 = this->coefs[4];
     a2 = this->coefs[5];
-    
 }
 
 // Obtener el máximo número de etapas del filtro (el orden del filtro)
@@ -76,7 +77,6 @@ void biquad::getMaxOrder()
 
 void biquad::applyFilter(const float *const input, float *const output, int nFrames)
 {
-
 
     for (size_t n = 0; n < nFrames; ++n)
     {
@@ -92,13 +92,9 @@ void biquad::applyFilter(const float *const input, float *const output, int nFra
 
         // Forma transpuesta
 
-        
-
-        output[n] = this->b0*input[n] + this->w1_past;
-        this->w1_past = this->b1*input[n] - this->a1*output[n] + this->w2_past;
-        this->w2_past = this->b2*input[n] - this->a2*output[n];
-
-
+        output[n] = this->b0 * input[n] + this->w1_past;
+        this->w1_past = this->b1 * input[n] - this->a1 * output[n] + this->w2_past;
+        this->w2_past = this->b2 * input[n] - this->a2 * output[n];
     }
 }
 
@@ -113,7 +109,7 @@ float biquad::processOne(float input)
 {
     // Forma directa
 
-    /*  
+    /*
     float output = this->b[0] * input + this->b[1] * x1 + this->b[2] * x2 - this->a[1] * y1 - this->a[2] * y2;
     this->x1 = input;
     this->x2 = this->x1;
@@ -123,34 +119,44 @@ float biquad::processOne(float input)
     */
     // Forma transpuesta
 
-    float output = this->b0*input + this->w1_past;
-    this->w1_past = this->b1*input - this->a1*output + this->w2_past;
-    this->w2_past = this->b2*input - this->a2*output;
+    float output = this->b0 * input + this->w1_past;
+    this->w1_past = this->b1 * input - this->a1 * output + this->w2_past;
+    this->w2_past = this->b2 * input - this->a2 * output;
 
     return output;
-    
 }
 
-__m128 biquad::processVectorial(__m128 __restrict vectorIn) {
+__m128 biquad::processVectorial(__m128 __restrict vectorIn)
+{
+    __m128 outputVec;
+    if (this->firstTime)
+    {
 
+        float inputArray[4], outputArray[4];
 
-    float inputArray[4], outputArray[4];
+        _mm_storeu_ps(&inputArray[0], vectorIn);
 
-    this->w1_past_point = _mm_loadu_ps(&this->w1_pastVec);
-    this->w2_past_point = _mm_loadu_ps(&this->w2_pastVec);
+        for (int i = 0; i < 4; i++)
+        {
+            outputArray[i] = this->b0 * inputArray[i] + this->w1_past;
+            this->w1_past_point[i] = this->b1 * inputArray[i] - this->a1 * outputArray[i] + this->w1_past_point[i];
+            this->w1_past_point[i] = this->b2 * inputArray[i] - this->a2 * outputArray[i];
+        }
 
-    // Aplicar el filtro biquad transpuesto para 4 muestras
-    __m128 outputVec = _mm_add_ps(_mm_mul_ps(this->b0Vec, vectorIn), this->w1_pastVec);
-    _mm_storeu_ps(inputArray, vectorIn);
-    _mm_storeu_ps(outputArray, outputVec);
+        outputVec = _mm_loadu_ps(&outputArray[0]);
 
-    for (int i=0;i <3 ;i++){
-        this->w1_past_point[i] = this->b1*inputArray[i] - this->a1*outputArray[i] + this->w2_past_point[i];
-        this->w2_past_point[i] = this->b2*b1*inputArray[i] - this->a2*outputArray[i];
+        this->w1_pastVec = _mm_loadu_ps(&w1_past_point[0]);
+        this->w2_pastVec = _mm_loadu_ps(&w1_past_point[0]);
+
+        this->firstTime = false;
+    }
+    else
+    {
+        // Aplicar el filtro biquad transpuesto para 4 muestras
+        outputVec = _mm_add_ps(_mm_mul_ps(this->b0Vec, vectorIn), this->w1_pastVec);
+        this->w1_pastVec = _mm_add_ps(_mm_sub_ps(_mm_mul_ps(this->b1Vec, vectorIn), _mm_mul_ps(this->a1Vec, outputVec)), this->w2_pastVec);
+        this->w2_pastVec = _mm_sub_ps(_mm_mul_ps(this->b2Vec, vectorIn), _mm_mul_ps(this->a2Vec, outputVec));
     }
 
-    //this->w1_pastVec = _mm_add_ps(_mm_sub_ps(_mm_mul_ps(this->b1Vec, vectorIn), _mm_mul_ps(this->a1Vec, outputVec)), this->w2_pastVec);
-    //this->w2_pastVec = _mm_sub_ps(_mm_mul_ps(this->b2Vec, vectorIn), _mm_mul_ps(this->a2Vec, outputVec));
-    
     return outputVec; // Retornar el vector de salida
 }
