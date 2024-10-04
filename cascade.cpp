@@ -59,12 +59,12 @@ void cascade::process(int nframes, const float *const __restrict in, float *cons
 
         // Procesar etapas del filtro
         if (this->maxOrder == 3) {
-            partialResults[1] = this->stages[0]->processOne(partialResults[0]);
-            partialResults[2] = this->stages[1]->processOne(partialResults[1]);
-            out[i] = this->stages[2]->processOne(partialResults[2]); // Almacena el resultado final directamente
+            partialResults[1] = this->stages[0]->processOne(&partialResults[0]);
+            partialResults[2] = this->stages[1]->processOne(&partialResults[1]);
+            out[i] = this->stages[2]->processOne(&partialResults[2]); // Almacena el resultado final directamente
         } else {
-            partialResults[1] = this->stages[0]->processOne(partialResults[0]);
-            out[i] = this->stages[1]->processOne(partialResults[1]); // Almacena el resultado final directamente
+            partialResults[1] = this->stages[0]->processOne(&partialResults[0]);
+            out[i] = this->stages[1]->processOne(&partialResults[1]); // Almacena el resultado final directamente
         }
     }
 }
