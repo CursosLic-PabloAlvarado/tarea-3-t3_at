@@ -98,4 +98,41 @@ static void BM_Cascade_Process(benchmark::State& state) {
 // Vary array size from 8 to 8192
 BENCHMARK(BM_Cascade_Process)->RangeMultiplier(2)->Range(256, 8<<10);
 
+
+static void BM_Cascade_Process_Impulse(benchmark::State& state) {
+  std::vector< std::vector<float> > coefs = {
+      {0.88489099304085195,-1.7647259369167299,0.88489099279944872,
+      1,-1.9447696737414277,0.96118976527688038},
+      {1, -1.9962282681026606, 1.0000000006886136,
+      1,-1.9902746344470237,0.99111829673050256},
+      {1,-1.9975106328926273,0.99999999958419417,
+      1,-1.8137023593689499,0.81712922359906082}
+  };
+  
+  cascade dut(coefs);
+  int size = state.range(0);
+
+  // Crear el pulso unitario
+  float input[size] = {0};
+  input[0] = 1.0f;  // Primer valor es 1, los demás 0
+
+  float output[size] = {0};
+
+  for (auto _ : state) {
+    dut.process(size, input, output);
+    
+    // Imprimir la salida en cada iteración
+    std::cout << "Output: ";
+    for (int i = 0; i < size; ++i) {
+      std::cout << output[i] << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  state.SetItemsProcessed(size);
+  state.SetComplexityN(size);
+}
+
+BENCHMARK(BM_Cascade_Process)->Range(1024, 1024);
+
 BENCHMARK_MAIN();
