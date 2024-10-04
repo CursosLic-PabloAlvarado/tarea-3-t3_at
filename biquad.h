@@ -51,10 +51,6 @@ public:
 
         return output;
     }
-    /**
-     * Función auxiliar de process para procesar vectores de muestras haciendo uso de registros
-     */
-    __m128 processVectorial(__m128 __restrict vectorIn);
 
     bool firstTime;
 
@@ -68,18 +64,6 @@ public:
     float y2;
     float w2_past;
     float w1_past;
-
-    float *w2_past_point;
-    float *w1_past_point;
-
-    __m128 b0Vec;
-    __m128 b1Vec;
-    __m128 b2Vec;
-    __m128 a1Vec;
-    __m128 a2Vec;
-
-    __m128 w1_pastVec;
-    __m128 w2_pastVec;
 
 private:
     std::vector<float> coefs;

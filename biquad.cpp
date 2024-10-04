@@ -17,19 +17,6 @@ biquad::biquad(std::vector<float> &coefsIn)
     this->denExtractor();
     this->numExtractor();
 
-    // Variables para almacenar el estado anterior de cada biquad
-    this->b0Vec = _mm_set1_ps(this->b0);
-    this->b1Vec = _mm_set1_ps(this->b1);
-    this->b2Vec = _mm_set1_ps(this->b2);
-    this->a1Vec = _mm_set1_ps(this->a1);
-    this->a2Vec = _mm_set1_ps(this->a2);
-
-    this->w1_pastVec = _mm_set1_ps(0);
-    this->w2_pastVec = _mm_set1_ps(0);
-
-    this->w1_past_point = new float[4];
-    this->w2_past_point = new float[4];
-
     this->x0 = 0.0;
     this->x1 = 0.0;
     this->x2 = 0.0;
@@ -97,43 +84,3 @@ void biquad::process(int nframes, const float *const in, float *const out)
     this->applyFilter(in, out, nframes);
 }
 
-
-__m128 biquad::processVectorial(__m128 __restrict vectorIn)
-{
-    __m128 outputVec;
-    int j;
-    if (this->firstTime)
-    {
-
-        float * inputArray = new float[4];
-        float * outputArray = new float[4];
-
-        _mm_storeu_ps(&inputArray[0], vectorIn);
-
-        for (int i = 0; i < 4; i++)
-        {
-            outputArray[i] = this->b0 * inputArray[i] + this->w1_past_point[i];
-            
-            if (i+1 == 4){
-                j = 0;
-            }else{
-                j = i+1;
-            }
-
-            this->w1_past_point[j] = this->b1 * inputArray[i] - this->a1 * outputArray[i] + this->w2_past_point[i];
-            this->w2_past_point[j] = this->b2 * inputArray[i] - this->a2 * outputArray[i];
-            
-        }
-
-        outputVec = _mm_loadu_ps(&outputArray[0]);
-
-        this->w1_pastVec = _mm_loadu_ps(&w1_past_point[0]);
-        this->w2_pastVec = _mm_loadu_ps(&w2_past_point[0]);
-
-
-    }
-
-
-
-    return outputVec; // Retornar el vector de salida
-}
