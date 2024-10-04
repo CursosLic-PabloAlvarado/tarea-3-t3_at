@@ -132,21 +132,22 @@ __m128 biquad::processVectorial(__m128 __restrict vectorIn)
     if (this->firstTime)
     {
 
-        float inputArray[4], outputArray[4];
+        float * inputArray = new float[4];
+        float * outputArray = new float[4];
 
         _mm_storeu_ps(&inputArray[0], vectorIn);
 
         for (int i = 0; i < 4; i++)
         {
-            outputArray[i] = this->b0 * inputArray[i] + this->w1_past;
-            this->w1_past_point[i] = this->b1 * inputArray[i] - this->a1 * outputArray[i] + this->w1_past_point[i];
-            this->w1_past_point[i] = this->b2 * inputArray[i] - this->a2 * outputArray[i];
+            outputArray[i] = this->b0 * inputArray[i] + this->w1_past_point[i];
+            this->w1_past_point[i] = this->b1 * inputArray[i] - this->a1 * outputArray[i] + this->w2_past_point[i];
+            this->w2_past_point[i] = this->b2 * inputArray[i] - this->a2 * outputArray[i];
         }
 
         outputVec = _mm_loadu_ps(&outputArray[0]);
 
         this->w1_pastVec = _mm_loadu_ps(&w1_past_point[0]);
-        this->w2_pastVec = _mm_loadu_ps(&w1_past_point[0]);
+        this->w2_pastVec = _mm_loadu_ps(&w2_past_point[0]);
 
         this->firstTime = false;
     }
