@@ -15,9 +15,8 @@ cascade::cascade(std::vector<std::vector<float>> &coefsIn)
     }
 }
 
-
-//Forma transpuesta sin loop unrooling, el buffer se recorre n veces para las etapas
-/*  
+// Forma transpuesta sin loop unrooling, el buffer se recorre n veces para las etapas
+/*
 void cascade::process(int nframes, const float *const in, float *const out)
 {
 
@@ -45,72 +44,62 @@ void cascade::process(int nframes, const float *const in, float *const out)
 
 */
 
-//Forma transpuesta con loop unrooling, el buffer se recorre 1 vez para las etapas, se trabaja muestra por muestra
+// Forma transpuesta con loop unrooling, el buffer se recorre 1 vez para las etapas, se trabaja muestra por muestra
 
+void cascade::process(int nframes, const float *const __restrict in, float *const __restrict out)
+{
+    if (maxOrder == 3)
+    {
+        processThreeStages(nframes, in, out);
+    }
+    else
+    {
+        processTwoStages(nframes, in, out);
+    }
+}
 
+void cascade::processThreeStages(int nframes, const float *const __restrict in, float *const __restrict out)
+{
+    float partialResults[3]; // Tamaño fijo para 3 etapas
 
-void cascade::process(int nframes, const float *const __restrict in, float *const __restrict out) {
-    // Procesar encadenando muestra por muestra
-    float partialResults[3]; // Tamaño fijo para maxOrder = 3
-
-    for (int i = 0; i < nframes; i++) {
+    for (int i = 0; i < nframes; i++)
+    {
         // Inicializar la entrada
         partialResults[0] = in[i];
 
         // Procesar etapas del filtro
-        if (this->maxOrder == 3) {
-            partialResults[1] = this->stages[0]->processOne(&partialResults[0]);
-            partialResults[2] = this->stages[1]->processOne(&partialResults[1]);
-            out[i] = this->stages[2]->processOne(&partialResults[2]); // Almacena el resultado final directamente
-        } else {
-            partialResults[1] = this->stages[0]->processOne(&partialResults[0]);
-            out[i] = this->stages[1]->processOne(&partialResults[1]); // Almacena el resultado final directamente
-        }
+        partialResults[1] = this->stages[0]->processOne(partialResults[0]);
+        partialResults[2] = this->stages[1]->processOne(partialResults[1]);
+        out[i] = this->stages[2]->processOne(partialResults[2]); // Almacena el resultado final directamente
     }
 }
 
-/*  
+void cascade::processTwoStages(int nframes, const float *const __restrict in, float *const __restrict out)
+{
+    float partialResults[2]; // Tamaño fijo para 2 etapas
 
-void cascade::process(int nframes, const float *const __restrict in, float *const __restrict out) {
-    // Procesar encadenando muestra por muestra
-    //constexpr int maxOrder = 3; // Cambia esto si tu maxOrder es diferente
-    float partialResults[this->maxOrder + 1]; // Tamaño fijo para maxOrder = 3
-
-    // Lambda para procesar la cadena de filtros
-    auto processStages = [&](int order) {
-        partialResults[1] = this->stages[0]->processOne(partialResults[0]);
-        if (order == 3) {
-            partialResults[2] = this->stages[1]->processOne(partialResults[1]);
-            return this->stages[2]->processOne(partialResults[2]); // Resultado final para maxOrder = 3
-        } else {
-            return this->stages[1]->processOne(partialResults[1]); // Resultado final para maxOrder = 2
-        }
-    };
-
-    for (int i = 0; i < nframes; i++) {
+    for (int i = 0; i < nframes; i++)
+    {
         // Inicializar la entrada
         partialResults[0] = in[i];
 
-        // Procesar etapas del filtro usando la lambda
-        out[i] = processStages(this->maxOrder);
+        // Procesar etapas del filtro
+        partialResults[1] = this->stages[0]->processOne(partialResults[0]);
+        out[i] = this->stages[1]->processOne(partialResults[1]); // Almacena el resultado final directamente
     }
 }
 
-*/
-
 __m128 cascade::subProcessVector(int stage, __m128 inputVec)
 {
-
 
     __m128 outputVec = this->stages[stage]->processVectorial(inputVec);
 
     return outputVec;
 }
 
-//Forma transpuesta con loop unrooling, procesamiento vectorial, el buffer se recorre 1 vez para las etapas, se trabaja en 4 muestras con shifts
+// Forma transpuesta con loop unrooling, procesamiento vectorial, el buffer se recorre 1 vez para las etapas, se trabaja en 4 muestras con shifts
 
-
-/*  
+/*
 
 void cascade::process(int nframes, const float *__restrict in, float *__restrict out)
 {
