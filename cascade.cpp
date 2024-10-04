@@ -47,6 +47,8 @@ void cascade::process(int nframes, const float *const in, float *const out)
 
 //Forma transpuesta con loop unrooling, el buffer se recorre 1 vez para las etapas, se trabaja muestra por muestra
 
+
+/* 
 void cascade::process(int nframes, const float *const in, float *const out) {
     // Procesar encadenando muestra por muestra
     float partialResults[3]; // Tamaño fijo para maxOrder = 3
@@ -66,7 +68,7 @@ void cascade::process(int nframes, const float *const in, float *const out) {
         }
     }
 }
-
+*/
 
 
 void cascade::process(int nframes, const float *const in, float *const out) {
