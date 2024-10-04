@@ -43,7 +43,7 @@ public:
     {
 
         // Calcular la salida
-        float output = this->b0 *  input + this->w1_past;
+        const float output = this->b0 *  input + this->w1_past;
 
         // Actualizar los estados pasados
         this->w1_past = this->b1 * input - this->a1 * output + this->w2_past;
