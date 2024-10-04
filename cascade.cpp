@@ -98,7 +98,7 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
     __m128 resultVec3;
 
     // Procesar bloques de 4 muestras usando SIMD
-    for (; i <= nframes - simdWidth; i += simdWidth)
+    for (; i <= nframes - simdWidth; i += 1)
     {
         // Cargar 4 muestras de entrada
         __m128 inputVec = _mm_loadu_ps(&in[i]);
@@ -119,20 +119,6 @@ void cascade::process(int nframes, const float *__restrict in, float *__restrict
 
         // Guardar el resultado procesado
         _mm_storeu_ps(&out[i], resultVec3);
-    }
-
-    // Procesar las muestras restantes
-    for (; i < nframes; ++i)
-    {
-        // Para cada muestra restante, procesar usando subProcessVector
-        if (this->maxOrder == 3)
-        {
-            out[i] = this->subProcessVector(2, this->subProcessVector(1, this->subProcessVector(0, in[i])));
-        }
-        else
-        {
-            out[i] = this->subProcessVector(1, this->subProcessVector(0, in[i]));
-        }
     }
 }
 
