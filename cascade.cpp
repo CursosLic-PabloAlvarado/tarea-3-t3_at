@@ -58,6 +58,8 @@ void cascade::process(int nframes, const float *const __restrict in, float *cons
     }
 }
 
+/*  
+
 void cascade::processThreeStages(int nframes, const float *const __restrict in, float *const __restrict out)
 {
     float partialResults[3]; // Tamaño fijo para 3 etapas
@@ -73,7 +75,35 @@ void cascade::processThreeStages(int nframes, const float *const __restrict in, 
         out[i] = this->stages[2]->processOne(partialResults[2]); // Almacena el resultado final directamente
     }
 }
+*/
 
+
+
+
+void cascade::processThreeStages(int nframes, const float *const __restrict in, float *const __restrict out)
+{
+    float partialResults[3]; // Tamaño fijo para 3 etapas
+    
+    for (int i = 0; i < nframes; i++)
+    {
+        // Hacer prefetch de la entrada 'in' a la caché L1
+        // Hacer prefetch
+        if (i + this->prefetch_distance < nframes)
+        {
+            __builtin_prefetch(&in[i + this->prefetch_distance], 0, 1);  // Prefetch para lectura
+            __builtin_prefetch(&out[i + this->prefetch_distance], 1, 1);  // Prefetch para escritura
+        }
+        // Inicializar la entrada
+        partialResults[0] = in[i];
+
+        // Procesar etapas del filtro
+        partialResults[1] = this->stages[0]->processOne(partialResults[0]);
+        partialResults[2] = this->stages[1]->processOne(partialResults[1]);
+        out[i] = this->stages[2]->processOne(partialResults[2]); // Almacena el resultado final directamente
+    }
+}
+
+/* 
 void cascade::processTwoStages(int nframes, const float *const __restrict in, float *const __restrict out)
 {
     float partialResults[2]; // Tamaño fijo para 2 etapas
@@ -88,4 +118,29 @@ void cascade::processTwoStages(int nframes, const float *const __restrict in, fl
         out[i] = this->stages[1]->processOne(partialResults[1]); // Almacena el resultado final directamente
     }
 }
+*/
 
+
+
+
+void cascade::processTwoStages(int nframes, const float *const __restrict in, float *const __restrict out)
+{
+    float partialResults[2]; // Tamaño fijo para 2 etapas
+
+    for (int i = 0; i < nframes; i++)
+    {
+        // Hacer prefetch
+        if (i + this->prefetch_distance < nframes)
+        {
+            __builtin_prefetch(&in[i + this->prefetch_distance], 0, 1);  // Prefetch para lectura
+            __builtin_prefetch(&out[i + this->prefetch_distance], 1, 1);  // Prefetch para escritura
+        }
+        
+        // Inicializar la entrada
+        partialResults[0] = in[i];
+
+        // Procesar etapas del filtro
+        partialResults[1] = this->stages[0]->processOne(partialResults[0]);
+        out[i] = this->stages[1]->processOne(partialResults[1]); // Almacena el resultado final directamente
+    }
+}

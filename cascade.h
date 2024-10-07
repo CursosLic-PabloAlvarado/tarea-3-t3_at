@@ -27,6 +27,7 @@ private:
     std::vector<biquad*> stages; 
     std::vector<std::vector<float>> coefs;
     int maxOrder;
+    const int prefetch_distance = 16;
 };
 
 #endif // CASCADE_H
